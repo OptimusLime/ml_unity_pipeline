@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "com.unity.package-manager-ui": "1.8.2",
+    "com.unity.assetbundlebrowser": "1.5.0"
+  }
+}
