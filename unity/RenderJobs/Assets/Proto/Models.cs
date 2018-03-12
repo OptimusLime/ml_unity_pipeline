@@ -22,21 +22,23 @@ public static partial class ModelsReflection {
   static ModelsReflection() {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
-          "Cgxtb2RlbHMucHJvdG8iIwoKUHJvdG9IZWxsbxIVCg1wcm90b19tZXNzYWdl",
-          "GAEgASgJIkYKCkl0ZW1IZWFkZXISEAoIcHJvdG9faWQYASABKAUSEgoKcHJv",
-          "dG9fdHlwZRgCIAEoBRISCgpwcm90b19zaXplGAMgASgFIi4KC1Byb3RvSGVh",
-          "ZGVyEh8KCnByb3RvSXRlbXMYASADKAsyCy5JdGVtSGVhZGVyIioKDFByb3Rv",
-          "TWFwcGluZxILCgNrZXkYASABKAUSDQoFdmFsdWUYAiABKAkiLgoJUHJvdG9K",
-          "b2luEiEKCml4VG9Qcm90b3MYASADKAsyDS5Qcm90b01hcHBpbmciTQoEV2Fs",
-          "bBIPCgd2aXNpYmxlGAEgASgIEhkKAnAxGAIgASgLMg0uUHJvdG9WZWN0b3Iy",
-          "EhkKAnAyGAMgASgLMg0uUHJvdG9WZWN0b3IyIiQKDFByb3RvVmVjdG9yMhIJ",
-          "CgF4GAEgASgCEgkKAXkYAiABKAIifgoMQnVpbGRNYXplTXNnEhEKCW1hemVf",
-          "bmFtZRgBIAEoCRIiCgtzdGFydF9wb2ludBgCIAEoCzINLlByb3RvVmVjdG9y",
-          "MhIhCgpnb2FsX3BvaW50GAQgASgLMg0uUHJvdG9WZWN0b3IyEhQKBXdhbGxz",
-          "GAUgAygLMgUuV2FsbGIGcHJvdG8z"));
+          "Cgxtb2RlbHMucHJvdG8iIwoMUHJvdG9Db250YWN0EhMKC3Byb3RvX3ByaW1l",
+          "GAEgASgFIiMKClByb3RvSGVsbG8SFQoNcHJvdG9fbWVzc2FnZRgBIAEoCSJG",
+          "CgpJdGVtSGVhZGVyEhAKCHByb3RvX2lkGAEgASgFEhIKCnByb3RvX3R5cGUY",
+          "AiABKAUSEgoKcHJvdG9fc2l6ZRgDIAEoBSIuCgtQcm90b0hlYWRlchIfCgpw",
+          "cm90b0l0ZW1zGAEgAygLMgsuSXRlbUhlYWRlciIqCgxQcm90b01hcHBpbmcS",
+          "CwoDa2V5GAEgASgFEg0KBXZhbHVlGAIgASgJIi4KCVByb3RvSm9pbhIhCgpp",
+          "eFRvUHJvdG9zGAEgAygLMg0uUHJvdG9NYXBwaW5nIk0KBFdhbGwSDwoHdmlz",
+          "aWJsZRgBIAEoCBIZCgJwMRgCIAEoCzINLlByb3RvVmVjdG9yMhIZCgJwMhgD",
+          "IAEoCzINLlByb3RvVmVjdG9yMiIkCgxQcm90b1ZlY3RvcjISCQoBeBgBIAEo",
+          "AhIJCgF5GAIgASgCIn4KDEJ1aWxkTWF6ZU1zZxIRCgltYXplX25hbWUYASAB",
+          "KAkSIgoLc3RhcnRfcG9pbnQYAiABKAsyDS5Qcm90b1ZlY3RvcjISIQoKZ29h",
+          "bF9wb2ludBgEIAEoCzINLlByb3RvVmVjdG9yMhIUCgV3YWxscxgFIAMoCzIF",
+          "LldhbGxiBnByb3RvMw=="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(typeof(global::ProtoContact), global::ProtoContact.Parser, new[]{ "ProtoPrime" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ProtoHello), global::ProtoHello.Parser, new[]{ "ProtoMessage" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ItemHeader), global::ItemHeader.Parser, new[]{ "ProtoId", "ProtoType", "ProtoSize" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ProtoHeader), global::ProtoHeader.Parser, new[]{ "ProtoItems" }, null, null, null),
@@ -51,6 +53,135 @@ public static partial class ModelsReflection {
 
 }
 #region Messages
+public sealed partial class ProtoContact : pb::IMessage<ProtoContact> {
+  private static readonly pb::MessageParser<ProtoContact> _parser = new pb::MessageParser<ProtoContact>(() => new ProtoContact());
+  private pb::UnknownFieldSet _unknownFields;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pb::MessageParser<ProtoContact> Parser { get { return _parser; } }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pbr::MessageDescriptor Descriptor {
+    get { return global::ModelsReflection.Descriptor.MessageTypes[0]; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  pbr::MessageDescriptor pb::IMessage.Descriptor {
+    get { return Descriptor; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoContact() {
+    OnConstruction();
+  }
+
+  partial void OnConstruction();
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoContact(ProtoContact other) : this() {
+    protoPrime_ = other.protoPrime_;
+    _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoContact Clone() {
+    return new ProtoContact(this);
+  }
+
+  /// <summary>Field number for the "proto_prime" field.</summary>
+  public const int ProtoPrimeFieldNumber = 1;
+  private int protoPrime_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int ProtoPrime {
+    get { return protoPrime_; }
+    set {
+      protoPrime_ = value;
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override bool Equals(object other) {
+    return Equals(other as ProtoContact);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public bool Equals(ProtoContact other) {
+    if (ReferenceEquals(other, null)) {
+      return false;
+    }
+    if (ReferenceEquals(other, this)) {
+      return true;
+    }
+    if (ProtoPrime != other.ProtoPrime) return false;
+    return Equals(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override int GetHashCode() {
+    int hash = 1;
+    if (ProtoPrime != 0) hash ^= ProtoPrime.GetHashCode();
+    if (_unknownFields != null) {
+      hash ^= _unknownFields.GetHashCode();
+    }
+    return hash;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override string ToString() {
+    return pb::JsonFormatter.ToDiagnosticString(this);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void WriteTo(pb::CodedOutputStream output) {
+    if (ProtoPrime != 0) {
+      output.WriteRawTag(8);
+      output.WriteInt32(ProtoPrime);
+    }
+    if (_unknownFields != null) {
+      _unknownFields.WriteTo(output);
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int CalculateSize() {
+    int size = 0;
+    if (ProtoPrime != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeInt32Size(ProtoPrime);
+    }
+    if (_unknownFields != null) {
+      size += _unknownFields.CalculateSize();
+    }
+    return size;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(ProtoContact other) {
+    if (other == null) {
+      return;
+    }
+    if (other.ProtoPrime != 0) {
+      ProtoPrime = other.ProtoPrime;
+    }
+    _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(pb::CodedInputStream input) {
+    uint tag;
+    while ((tag = input.ReadTag()) != 0) {
+      switch(tag) {
+        default:
+          _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+          break;
+        case 8: {
+          ProtoPrime = input.ReadInt32();
+          break;
+        }
+      }
+    }
+  }
+
+}
+
 public sealed partial class ProtoHello : pb::IMessage<ProtoHello> {
   private static readonly pb::MessageParser<ProtoHello> _parser = new pb::MessageParser<ProtoHello>(() => new ProtoHello());
   private pb::UnknownFieldSet _unknownFields;
@@ -59,7 +190,7 @@ public sealed partial class ProtoHello : pb::IMessage<ProtoHello> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[0]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[1]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -188,7 +319,7 @@ public sealed partial class ItemHeader : pb::IMessage<ItemHeader> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[1]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[2]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -373,7 +504,7 @@ public sealed partial class ProtoHeader : pb::IMessage<ProtoHeader> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[2]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[3]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -494,7 +625,7 @@ public sealed partial class ProtoMapping : pb::IMessage<ProtoMapping> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[3]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[4]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -651,7 +782,7 @@ public sealed partial class ProtoJoin : pb::IMessage<ProtoJoin> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[4]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[5]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -772,7 +903,7 @@ public sealed partial class Wall : pb::IMessage<Wall> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[5]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[6]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -969,7 +1100,7 @@ public sealed partial class ProtoVector2 : pb::IMessage<ProtoVector2> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[6]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[7]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1126,7 +1257,7 @@ public sealed partial class BuildMazeMsg : pb::IMessage<BuildMazeMsg> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[7]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[8]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

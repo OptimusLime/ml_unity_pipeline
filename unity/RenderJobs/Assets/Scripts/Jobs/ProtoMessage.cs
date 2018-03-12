@@ -53,7 +53,7 @@ namespace Jobs
             {
                 ProtoId = -1,
                 ProtoSize = -1,
-                ProtoType = ProtoRouter.Instance.GetProtoType(protoObject)
+                ProtoType = MasterProtoRouter.Instance.GetProtoTypeIx(protoObject)
             };
 
             this.AddProtoObject(header, protoObject);
@@ -75,12 +75,13 @@ namespace Jobs
         {
             var obj = headerAndObject.Item2;
 
-            // all protobuf objects have ToByteArray methods that take no params
-            MethodInfo methodInfo = obj.GetType().GetMethod("ToByteArray");
-
             try
             {
-                byte[] byteEncoded = (byte[]) methodInfo.Invoke(obj, null);
+                // ToByteArray is an extension method, we use protobuf to handle this for us
+                // assuming that we're being passed an IMessage object (proto obj)
+                byte[] byteEncoded = Google.Protobuf.MessageExtensions.ToByteArray((IMessage)obj);
+
+                Debug.Log($"encoded resp {byteEncoded.Length}, and type {headerAndObject.Item1.ProtoType}");
                 this.AddProtoObject(byteEncoded, headerAndObject.Item1.ProtoType);
             }
             catch(Exception e)
@@ -92,40 +93,41 @@ namespace Jobs
 
         public byte[] GetBytes()
         {
-            //reset our index
+            // reset our index
             mCurrentOffset = 0;
             mHeaderSize = 0;
 
-            //convert all our items into bytes
-            //TODO: Only call this once unless modified in between
+            // convert all our items into bytes
+            // TODO: Only call this once unless modified in between
             foreach (var headerAndObject in protoObjects)
             {
                 protoToByte(headerAndObject);
             }
 
-            //convert to our byte format for header 
+            // convert to our byte format for header 
             var headerBytes = mHeader.ToByteArray();
+
+            // pass our header length as first object to be decoded
+            int headerLength = headerBytes.Length;
 
             //now we know total length
             var totalByteLength = sizeof(Int32) + headerBytes.Length + mCurrentOffset;
-            var fullBuffer = new byte[totalByteLength]; //# Unpooled.Buffer(totalByteLength);
 
-            //write our header size
-            int currentWrite = 0;
-            int headerLength = headerBytes.Length;
-            Buffer.BlockCopy(BitConverter.GetBytes(headerLength), 0, fullBuffer, currentWrite, sizeof(int));
-            currentWrite += sizeof(int);
+            var fullBuffer = new ByteOperations.ByteWriter(totalByteLength);
 
-            //write our header 
-            Buffer.BlockCopy(headerBytes, 0, fullBuffer, currentWrite, headerBytes.Length);
-            currentWrite += headerBytes.Length;
+			// write our header size
+            fullBuffer.WriteInt(headerLength);
 
-            //then write the content of the message
-            Buffer.BlockCopy(mBody.ToArray(), 0, fullBuffer, currentWrite, mBody.Count);
-            currentWrite += mBody.Count;
+            // write our header 
+            fullBuffer.WriteBytes(headerBytes);
+
+            // write our body 
+            fullBuffer.WriteBytes(mBody.ToArray());
+
+            Debug.Log($"Finished writing bytes {fullBuffer.Length}");
 
             //send back the buffer full of bytes, not so hard
-            return fullBuffer;
+            return fullBuffer.GetBytes();
         }
 
         ProtoMessage AddProtoObject(byte[] protoBytes, int protoType)
@@ -149,6 +151,16 @@ namespace Jobs
             return this;
         }
 
-    }
+		public override string ToString()
+		{
+            var internalObjects = "";
+            foreach(var headerAndObj in this.protoObjects)
+            {
+                internalObjects += $"[header: {headerAndObj.Item1}][object: {headerAndObj.Item2}]\n";
+            }
+            return internalObjects;
+		}
+
+	}
 
 }

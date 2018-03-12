@@ -1,6 +1,11 @@
 syntax = "proto3";
 
 
+message ProtoContact
+{
+    int32 proto_prime = 1;
+}
+
 message ProtoHello
 {
     string proto_message = 1;

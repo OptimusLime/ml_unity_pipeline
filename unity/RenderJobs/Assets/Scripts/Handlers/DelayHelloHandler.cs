@@ -5,22 +5,26 @@ using Jobs;
 using RSG;
 using System;
 
-public class DelayHelloHandler : MonoBehaviour
+public class DelayHelloHandler : BaseHandler
 {
 
     ProtoMessage futureMessage = null;
     Promise<ProtoMessage> promised = null;
     float delay = 4.0f;
+    System.Random r = new System.Random();
 
     // Use this for initialization
-    void Start()
-    {
-        // what a hack, I just want to register a function for this proto
-        // maybe there is a better way, but this is the only that can match generic types
-        var methodInfo = this.GetType().GetMethod("ReceiveHello", BindingFlags.NonPublic);
+    void Start(){
+        //this.RegisterProtoMessageHandlers();
+    //{
+        //// what a hack, I just want to register a function for this proto
+        //// maybe there is a better way, but this is the only that can match generic types
+        //var methodInfo = this.GetType().GetMethod("ReceiveHello", new Type[]{typeof(ProtoHello)});
 
-        //register our response to hello messages :)
-        ProtoRouter.Instance.AddResponsePromise(typeof(ProtoHello), this, methodInfo);
+        ////register our response to hello messages :)
+        //MasterProtoRouter.Instance.AddResponsePromise(typeof(ProtoHello), this, methodInfo);
+
+
     }
 
 
@@ -28,12 +32,12 @@ public class DelayHelloHandler : MonoBehaviour
     public Promise<ProtoMessage> ReceiveHello(ProtoHello hello)
     {
         var promise = new Promise<ProtoMessage>();
-
+        delay = (float)r.NextDouble()*4;
         this.promised = promise;
-        Debug.Log($"receiving a friendly hello and responding {hello.ProtoMessage}");
+        Debug.Log($"receiving a friendly hello and responding in future to msg {hello.ProtoMessage}");
 
         ProtoHello response = new ProtoHello();
-        response.ProtoMessage = $"howdy there from c# - you said {hello.ProtoMessage}";
+        response.ProtoMessage = $"delayed {delay}s howdy from c# - you said: {hello.ProtoMessage}";
         this.futureMessage = new ProtoMessage(response);
 
         return promise;
@@ -47,11 +51,17 @@ public class DelayHelloHandler : MonoBehaviour
             delay -= Time.deltaTime;
             if(delay < 0)
             {
-                delay = 4.0f;
+                Debug.Log("Resolving delayed process :)");
+                delay = (float)r.NextDouble()*4;
                 this.promised.Resolve(this.futureMessage);
                 this.promised = null;
                 this.futureMessage = null;
             }
         }
     }
+
+    //void OnDisable()
+    //{
+    //    this.RemoveProtoMessageHandlers();
+    //}
 }

@@ -1,14 +1,26 @@
 from pdb import set_trace as bb
-import asyncio
+# import asyncio
 import json
 import argparse
 from datetime import datetime
-from proto.models_pb2 import ProtoHeader, ProtoMapping, ProtoJoin, ProtoHello
+from proto.models_pb2 import *
 import struct
-from pika import BlockingConnection, ConnectionParameters
+import pika
+import uuid
 
 global_map = {}
 global_id = 1
+
+
+def proto_join_to_dict(proto_join):
+    proto_dict = {}
+    # map ixToProtos into dictionary
+    for cmap in proto_join.ixToProtos:
+        class_ix = cmap.key
+        Classname = globals()[cmap.value]
+        proto_dict[Classname] = class_ix
+    
+    return proto_dict
 
 
 class ProtoMessage():
@@ -27,6 +39,7 @@ class ProtoMessage():
 
         # turn our proto object into
         proto_msg = proto_obj.SerializeToString()
+
         self.msg_content['body'] += proto_msg
 
         # no object, it's a join message
@@ -41,6 +54,9 @@ class ProtoMessage():
         header_item.proto_type = proto_type_id
         header_item.proto_size = len(proto_msg)
 
+        print("Adding body content len - {}, \n header - {}".format(
+                len(proto_msg), header_item))
+
         # allow for message chaining
         return self
 
@@ -48,6 +64,8 @@ class ProtoMessage():
 
         # serialize our header from the full msg we've constructed
         header_prepend = self.msg_content['header'].SerializeToString()
+        
+        print("Header len {}".format(len(header_prepend)))
 
         # let the header length be known
         packed_header_len = struct.pack('>L', len(header_prepend))
@@ -58,44 +76,33 @@ class ProtoMessage():
 
 class MessageWrapper():
 
-    def __init__(self, connections, users):
-        self.connections = connections
-        self.users = users
-        self.peername = ""
-        self.user = None
-
+    def __init__(self):
         # go from type to ix
-        self.type_to_ix = {ProtoHeader: 0, ProtoMapping: 1,
-                           ProtoJoin: 2, ProtoHello: 3,
-                           ProtoVector2: 4, BuildMazeMsg: 5}
+        self.expand_classes({ProtoContact: -1})
 
-        self.ix_to_type = {val: k for k, val in self.type_to_ix.items()}
+    def get_proto_class_map(self):
+        proto_join = ProtoJoin()
+        for proto_cls, proto_val in self.type_to_ix.items():
+            ix_to_proto = proto_join.ixToProtos.add()
 
-    # def get_full_mapping_proto(self):
-    #     proto_join = ProtoJoin()
-    #     for proto_cls, proto_val in self.type_to_ix.items():
-    #         ix_to_proto = proto_join.ixToProtos.add()
-
-    #         ix_to_proto.key = proto_val
-    #         ix_to_proto.value = str(proto_cls.__name__)
-    #     return proto_join
+            ix_to_proto.key = proto_val
+            ix_to_proto.value = str(proto_cls.__name__)
+        return proto_join
 
     def join_message(self):
-
-        # create a message with multiple proto objects inside
-        join_msg_holder = ProtoMessage(self.type_to_ix)
-
-        # get our full mapping of types!
-        proto_map = self.get_full_mapping_proto()
-
-        pt_hello = ProtoHello()
-        pt_hello.proto_message = "hi ya from python doofus"
-
-        # send a map and a hello :)
-        return (join_msg_holder
-                .add_to_message(proto_map)
-                .add_to_message(pt_hello)
+        # initial message is to get info about the server
+        return (ProtoMessage(self.type_to_ix)
+                .add_to_message(ProtoContact())
                 .get_bytes())
+    
+    # agree on classes from a proto_join object
+    def expand_classes(self, class_map):
+        self.type_to_ix = {}
+        
+        for Classname, class_ix in class_map.items():
+            self.type_to_ix[Classname] = class_ix
+        
+        self.ix_to_type = {val: k for k, val in self.type_to_ix.items()}
 
     # here we take in byte_data, then read the header and body from the data
     # A message should be full of multiple proto objects.
@@ -136,35 +143,128 @@ class MessageWrapper():
             body_offset += obj_len
 
             # get our class, this is what we'll decode from bytes
-            ProtoClass = self.ix_to_type[obj_type_ix]
+            # any time we don't know what class
+            # we assume it's telling use about the classes
+            ProtoClass = (self.ix_to_type[obj_type_ix]
+                          if obj_type_ix in self.ix_to_type
+                          else ProtoJoin)
+
             proto_object = ProtoClass()
 
             # convert our bytes into the object onces again
             proto_object.ParseFromString(obj_bytes)
 
-            # record this object to pass to our router
-            header_and_objects.append((proto_item, proto_object))
+            # record object to pass to router
+            header_and_objects.append((proto_item, proto_object))       
 
         # decomposed our message into proto objects passed across the stream
         return header_and_objects
 
 
+class BasicClient(object):
+    def __init__(self, publish_queue):
+
+        self.publish_queue = publish_queue
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host='localhost'))
+
+        self.channel = self.connection.channel()
+
+        result = self.channel.queue_declare(exclusive=True, durable=True)
+        self.callback_queue = result.method.queue
+
+        self.channel.basic_consume(self.on_response, no_ack=True,
+                                   queue=self.callback_queue)
+        self.msg_wrap = MessageWrapper()
+
+    def on_response(self, ch, method, props, body):
+        if self.corr_id == props.correlation_id:
+            self.response = body
+    
+    # we send call and response
+    def connect(self):
+
+        # first message is to contact the server farm
+        contact_message = self.msg_wrap.join_message()
+        
+        # get information about the classes we need to map to
+        proto_res_header_and_obj = self.sync_call(contact_message)
+
+        # get the first object in the array, 
+        # adn then get the proto object (ignore the header)
+        pjoin_obj = proto_res_header_and_obj[0][1]
+
+        # use that to expand definition of class
+        self.msg_wrap.expand_classes(proto_join_to_dict(pjoin_obj))
+
+        # then we're done
+        return self
+
+    def get_message(self, *proto_args):
+        proto_msg = ProtoMessage(self.msg_wrap.type_to_ix)
+
+        # continually append the proto objects
+        for proto_obj in proto_args:
+            proto_msg = proto_msg.add_to_message(proto_obj)
+        
+        # then get our mesage
+        return proto_msg.get_bytes()
+
+    def sync_call(self, msg_body):
+        self.response = None
+        self.corr_id = str(uuid.uuid4())
+
+        self.channel.basic_publish(exchange='',
+                                   routing_key=self.publish_queue,
+                                   properties=pika.BasicProperties(
+                                         reply_to=self.callback_queue,
+                                         correlation_id=self.corr_id,
+                                         ),
+                                   body=msg_body)
+        while self.response is None:
+            self.connection.process_data_events()
+        
+        return self.msg_wrap.decode_to_proto(self.response)
+
 if __name__ == '__main__':
 
-    import pika
     import sys
 
-    connection = BlockingConnection(ConnectionParameters(host='localhost'))
-    channel = connection.channel()
+    queue_name = 'task_queue'
 
-    channel.queue_declare(queue='task_queue', durable=True)
-
-    # message = ' '.join(sys.argv[1:]) or "Hello World!"
-    channel.basic_publish(exchange='',
-                          routing_key='task_queue',
-                          body=MessageWrapper().join_message(),
-                          # make message persistent
-                          properties=pika.BasicProperties(delivery_mode=2))
+    print("Getting class information from Unity")
+    client = BasicClient(queue_name).connect()
     
-    print(" [x] Sent %r" % message)
-    connection.close()
+    # lets say hello
+    print("Class info achieved, saying hello")
+    hello_friend = ProtoHello()
+    hello_friend.proto_message = 'hi friend from python'
+
+    # empty call to serve, wait for response
+    cs_response = client.sync_call(client.get_message(hello_friend))
+
+    bb()
+    # connection = BlockingConnection(ConnectionParameters(host='localhost'))
+    # channel = connection.channel()
+
+    # queue_name = 'task_queue'
+    # result = channel.queue_declare(queue=queue_name, durable=True)
+    # callback_queue = result.method.queue
+    # open_msg = MessageWrapper().join_message()
+
+    # print("Open msg {}".format(len(open_msg)))
+    # bb()
+
+    # msg_uuid = str(uuid.uuid4())
+
+    # # message = ' '.join(sys.argv[1:]) or "Hello World!"
+    # channel.basic_publish(exchange='',
+    #                       routing_key=queue_name,
+    #                       body=open_msg,
+    #                       # make message persistent
+    #                       properties=pika.BasicProperties(reply_to=callback_queue,
+    #                                                       delivery_mode=2,
+    #                                                       correlation_id=msg_uuid))
+    
+    # print(" [x] Sent Hello Message")
+    # connection.close()
