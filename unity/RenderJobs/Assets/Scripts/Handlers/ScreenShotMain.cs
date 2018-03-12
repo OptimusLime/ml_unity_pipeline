@@ -5,7 +5,7 @@ using Jobs;
 using Google.Protobuf;
 using System;
 
-public class ScreenShotHandler : BaseHandler
+public class ScreenShotMain : BaseHandler
 {
     bool captureNextUpdate = false;
     Promise<ProtoMessage> promise;
@@ -51,7 +51,7 @@ public class ScreenShotHandler : BaseHandler
         }
     }
 
-    public Promise<ProtoMessage> ScreenShotMain(ProtoScreenShot request)
+    public Promise<ProtoMessage> ScreenShotNextUpdate(ProtoScreenShot request)
     {
         var promise = new Promise<ProtoMessage>();
         Debug.Log("Dispatching screenshot");

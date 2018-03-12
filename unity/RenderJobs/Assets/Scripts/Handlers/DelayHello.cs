@@ -5,7 +5,7 @@ using Jobs;
 using RSG;
 using System;
 
-public class DelayHelloHandler : BaseHandler
+public class DelayHello : BaseHandler
 {
 
     ProtoMessage futureMessage = null;

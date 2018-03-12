@@ -6,7 +6,7 @@ using RSG;
 using System;
 
 
-public class HelloHandler : BaseHandler
+public class Hello : BaseHandler
 {
     
 
