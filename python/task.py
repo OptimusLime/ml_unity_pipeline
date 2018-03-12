@@ -261,27 +261,3 @@ if __name__ == '__main__':
     np_ss = screenshot_to_np(ss_response[0][1])
 
     bb()
-    # connection = BlockingConnection(ConnectionParameters(host='localhost'))
-    # channel = connection.channel()
-
-    # queue_name = 'task_queue'
-    # result = channel.queue_declare(queue=queue_name, durable=True)
-    # callback_queue = result.method.queue
-    # open_msg = MessageWrapper().join_message()
-
-    # print("Open msg {}".format(len(open_msg)))
-    # bb()
-
-    # msg_uuid = str(uuid.uuid4())
-
-    # # message = ' '.join(sys.argv[1:]) or "Hello World!"
-    # channel.basic_publish(exchange='',
-    #                       routing_key=queue_name,
-    #                       body=open_msg,
-    #                       # make message persistent
-    #                       properties=pika.BasicProperties(reply_to=callback_queue,
-    #                                                       delivery_mode=2,
-    #                                                       correlation_id=msg_uuid))
-    
-    # print(" [x] Sent Hello Message")
-    # connection.close()
