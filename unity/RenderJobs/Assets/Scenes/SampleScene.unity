@@ -195,6 +195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1177793677}
   - component: {fileID: 1177793676}
+  - component: {fileID: 1177793678}
   m_Layer: 0
   m_Name: HelloHandler
   m_TagString: Untagged
@@ -226,6 +227,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1177793678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1177793675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b9879935a9a430398fb76ab180e393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1526980365
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,6 +313,7 @@ GameObject:
   - component: {fileID: 2054820547}
   - component: {fileID: 2054820546}
   - component: {fileID: 2054820548}
+  - component: {fileID: 2054820549}
   m_Layer: 0
   m_Name: MasterJobHandler
   m_TagString: Untagged
@@ -343,5 +356,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4610983e1fdf44ae589f6291c33c20bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2054820549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2054820545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f3f123313595497eaf508399ddec8fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

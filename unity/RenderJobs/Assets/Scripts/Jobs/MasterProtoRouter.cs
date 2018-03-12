@@ -69,6 +69,7 @@ namespace Jobs
         } // guarantee this will be always a singleton only - can't use the constructor!
         void OnEnable()
         {
+            var ugly = UnityThreadHelper.Dispatcher;
             this.RegisterProtoMessageHandlers();
         }
         void OnDisable()

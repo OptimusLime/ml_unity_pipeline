@@ -7,6 +7,9 @@ from proto.models_pb2 import *
 import struct
 import pika
 import uuid
+import io
+from PIL import Image
+import numpy as np
 
 global_map = {}
 global_id = 1
@@ -21,6 +24,13 @@ def proto_join_to_dict(proto_join):
         proto_dict[Classname] = class_ix
     
     return proto_dict
+
+
+# helper to go from byte string to np image
+# https://stackoverflow.com/questions/42036890/how-to-decode-jpg-png-in-python
+def screenshot_to_np(proto_ss):
+    pixel_stream = io.BytesIO(proto_ss.data)
+    return np.array(Image.open(pixel_stream))
 
 
 class ProtoMessage():
@@ -242,6 +252,13 @@ if __name__ == '__main__':
 
     # empty call to serve, wait for response
     cs_response = client.sync_call(client.get_message(hello_friend))
+    print("simple call and respond {}".format(cs_response))
+
+    ss_for_me = ProtoScreenShot()
+    ss_for_me.width = 32
+    ss_for_me.height = 32
+    ss_response = client.sync_call(client.get_message(ss_for_me))
+    np_ss = screenshot_to_np(ss_response[0][1])
 
     bb()
     # connection = BlockingConnection(ConnectionParameters(host='localhost'))

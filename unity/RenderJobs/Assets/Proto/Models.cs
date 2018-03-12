@@ -23,23 +23,26 @@ public static partial class ModelsReflection {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
           "Cgxtb2RlbHMucHJvdG8iIwoMUHJvdG9Db250YWN0EhMKC3Byb3RvX3ByaW1l",
-          "GAEgASgFIiMKClByb3RvSGVsbG8SFQoNcHJvdG9fbWVzc2FnZRgBIAEoCSJG",
-          "CgpJdGVtSGVhZGVyEhAKCHByb3RvX2lkGAEgASgFEhIKCnByb3RvX3R5cGUY",
-          "AiABKAUSEgoKcHJvdG9fc2l6ZRgDIAEoBSIuCgtQcm90b0hlYWRlchIfCgpw",
-          "cm90b0l0ZW1zGAEgAygLMgsuSXRlbUhlYWRlciIqCgxQcm90b01hcHBpbmcS",
-          "CwoDa2V5GAEgASgFEg0KBXZhbHVlGAIgASgJIi4KCVByb3RvSm9pbhIhCgpp",
-          "eFRvUHJvdG9zGAEgAygLMg0uUHJvdG9NYXBwaW5nIk0KBFdhbGwSDwoHdmlz",
-          "aWJsZRgBIAEoCBIZCgJwMRgCIAEoCzINLlByb3RvVmVjdG9yMhIZCgJwMhgD",
-          "IAEoCzINLlByb3RvVmVjdG9yMiIkCgxQcm90b1ZlY3RvcjISCQoBeBgBIAEo",
-          "AhIJCgF5GAIgASgCIn4KDEJ1aWxkTWF6ZU1zZxIRCgltYXplX25hbWUYASAB",
-          "KAkSIgoLc3RhcnRfcG9pbnQYAiABKAsyDS5Qcm90b1ZlY3RvcjISIQoKZ29h",
-          "bF9wb2ludBgEIAEoCzINLlByb3RvVmVjdG9yMhIUCgV3YWxscxgFIAMoCzIF",
-          "LldhbGxiBnByb3RvMw=="));
+          "GAEgASgFIiMKClByb3RvSGVsbG8SFQoNcHJvdG9fbWVzc2FnZRgBIAEoCSJj",
+          "Cg9Qcm90b1NjcmVlblNob3QSEQoJY2FtZXJhX2lkGAEgASgJEg0KBXdpZHRo",
+          "GAIgASgFEg4KBmhlaWdodBgDIAEoBRIQCghjaGFubmVscxgEIAEoBRIMCgRk",
+          "YXRhGAUgASgMIkYKCkl0ZW1IZWFkZXISEAoIcHJvdG9faWQYASABKAUSEgoK",
+          "cHJvdG9fdHlwZRgCIAEoBRISCgpwcm90b19zaXplGAMgASgFIi4KC1Byb3Rv",
+          "SGVhZGVyEh8KCnByb3RvSXRlbXMYASADKAsyCy5JdGVtSGVhZGVyIioKDFBy",
+          "b3RvTWFwcGluZxILCgNrZXkYASABKAUSDQoFdmFsdWUYAiABKAkiLgoJUHJv",
+          "dG9Kb2luEiEKCml4VG9Qcm90b3MYASADKAsyDS5Qcm90b01hcHBpbmciTQoE",
+          "V2FsbBIPCgd2aXNpYmxlGAEgASgIEhkKAnAxGAIgASgLMg0uUHJvdG9WZWN0",
+          "b3IyEhkKAnAyGAMgASgLMg0uUHJvdG9WZWN0b3IyIiQKDFByb3RvVmVjdG9y",
+          "MhIJCgF4GAEgASgCEgkKAXkYAiABKAIifgoMQnVpbGRNYXplTXNnEhEKCW1h",
+          "emVfbmFtZRgBIAEoCRIiCgtzdGFydF9wb2ludBgCIAEoCzINLlByb3RvVmVj",
+          "dG9yMhIhCgpnb2FsX3BvaW50GAQgASgLMg0uUHJvdG9WZWN0b3IyEhQKBXdh",
+          "bGxzGAUgAygLMgUuV2FsbGIGcHJvdG8z"));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
           new pbr::GeneratedClrTypeInfo(typeof(global::ProtoContact), global::ProtoContact.Parser, new[]{ "ProtoPrime" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ProtoHello), global::ProtoHello.Parser, new[]{ "ProtoMessage" }, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::ProtoScreenShot), global::ProtoScreenShot.Parser, new[]{ "CameraId", "Width", "Height", "Channels", "Data" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ItemHeader), global::ItemHeader.Parser, new[]{ "ProtoId", "ProtoType", "ProtoSize" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ProtoHeader), global::ProtoHeader.Parser, new[]{ "ProtoItems" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::ProtoMapping), global::ProtoMapping.Parser, new[]{ "Key", "Value" }, null, null, null),
@@ -311,6 +314,247 @@ public sealed partial class ProtoHello : pb::IMessage<ProtoHello> {
 
 }
 
+public sealed partial class ProtoScreenShot : pb::IMessage<ProtoScreenShot> {
+  private static readonly pb::MessageParser<ProtoScreenShot> _parser = new pb::MessageParser<ProtoScreenShot>(() => new ProtoScreenShot());
+  private pb::UnknownFieldSet _unknownFields;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pb::MessageParser<ProtoScreenShot> Parser { get { return _parser; } }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pbr::MessageDescriptor Descriptor {
+    get { return global::ModelsReflection.Descriptor.MessageTypes[2]; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  pbr::MessageDescriptor pb::IMessage.Descriptor {
+    get { return Descriptor; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoScreenShot() {
+    OnConstruction();
+  }
+
+  partial void OnConstruction();
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoScreenShot(ProtoScreenShot other) : this() {
+    cameraId_ = other.cameraId_;
+    width_ = other.width_;
+    height_ = other.height_;
+    channels_ = other.channels_;
+    data_ = other.data_;
+    _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoScreenShot Clone() {
+    return new ProtoScreenShot(this);
+  }
+
+  /// <summary>Field number for the "camera_id" field.</summary>
+  public const int CameraIdFieldNumber = 1;
+  private string cameraId_ = "";
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public string CameraId {
+    get { return cameraId_; }
+    set {
+      cameraId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+    }
+  }
+
+  /// <summary>Field number for the "width" field.</summary>
+  public const int WidthFieldNumber = 2;
+  private int width_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int Width {
+    get { return width_; }
+    set {
+      width_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "height" field.</summary>
+  public const int HeightFieldNumber = 3;
+  private int height_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int Height {
+    get { return height_; }
+    set {
+      height_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "channels" field.</summary>
+  public const int ChannelsFieldNumber = 4;
+  private int channels_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int Channels {
+    get { return channels_; }
+    set {
+      channels_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "data" field.</summary>
+  public const int DataFieldNumber = 5;
+  private pb::ByteString data_ = pb::ByteString.Empty;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public pb::ByteString Data {
+    get { return data_; }
+    set {
+      data_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override bool Equals(object other) {
+    return Equals(other as ProtoScreenShot);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public bool Equals(ProtoScreenShot other) {
+    if (ReferenceEquals(other, null)) {
+      return false;
+    }
+    if (ReferenceEquals(other, this)) {
+      return true;
+    }
+    if (CameraId != other.CameraId) return false;
+    if (Width != other.Width) return false;
+    if (Height != other.Height) return false;
+    if (Channels != other.Channels) return false;
+    if (Data != other.Data) return false;
+    return Equals(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override int GetHashCode() {
+    int hash = 1;
+    if (CameraId.Length != 0) hash ^= CameraId.GetHashCode();
+    if (Width != 0) hash ^= Width.GetHashCode();
+    if (Height != 0) hash ^= Height.GetHashCode();
+    if (Channels != 0) hash ^= Channels.GetHashCode();
+    if (Data.Length != 0) hash ^= Data.GetHashCode();
+    if (_unknownFields != null) {
+      hash ^= _unknownFields.GetHashCode();
+    }
+    return hash;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override string ToString() {
+    return pb::JsonFormatter.ToDiagnosticString(this);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void WriteTo(pb::CodedOutputStream output) {
+    if (CameraId.Length != 0) {
+      output.WriteRawTag(10);
+      output.WriteString(CameraId);
+    }
+    if (Width != 0) {
+      output.WriteRawTag(16);
+      output.WriteInt32(Width);
+    }
+    if (Height != 0) {
+      output.WriteRawTag(24);
+      output.WriteInt32(Height);
+    }
+    if (Channels != 0) {
+      output.WriteRawTag(32);
+      output.WriteInt32(Channels);
+    }
+    if (Data.Length != 0) {
+      output.WriteRawTag(42);
+      output.WriteBytes(Data);
+    }
+    if (_unknownFields != null) {
+      _unknownFields.WriteTo(output);
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int CalculateSize() {
+    int size = 0;
+    if (CameraId.Length != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeStringSize(CameraId);
+    }
+    if (Width != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeInt32Size(Width);
+    }
+    if (Height != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeInt32Size(Height);
+    }
+    if (Channels != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeInt32Size(Channels);
+    }
+    if (Data.Length != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeBytesSize(Data);
+    }
+    if (_unknownFields != null) {
+      size += _unknownFields.CalculateSize();
+    }
+    return size;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(ProtoScreenShot other) {
+    if (other == null) {
+      return;
+    }
+    if (other.CameraId.Length != 0) {
+      CameraId = other.CameraId;
+    }
+    if (other.Width != 0) {
+      Width = other.Width;
+    }
+    if (other.Height != 0) {
+      Height = other.Height;
+    }
+    if (other.Channels != 0) {
+      Channels = other.Channels;
+    }
+    if (other.Data.Length != 0) {
+      Data = other.Data;
+    }
+    _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(pb::CodedInputStream input) {
+    uint tag;
+    while ((tag = input.ReadTag()) != 0) {
+      switch(tag) {
+        default:
+          _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+          break;
+        case 10: {
+          CameraId = input.ReadString();
+          break;
+        }
+        case 16: {
+          Width = input.ReadInt32();
+          break;
+        }
+        case 24: {
+          Height = input.ReadInt32();
+          break;
+        }
+        case 32: {
+          Channels = input.ReadInt32();
+          break;
+        }
+        case 42: {
+          Data = input.ReadBytes();
+          break;
+        }
+      }
+    }
+  }
+
+}
+
 public sealed partial class ItemHeader : pb::IMessage<ItemHeader> {
   private static readonly pb::MessageParser<ItemHeader> _parser = new pb::MessageParser<ItemHeader>(() => new ItemHeader());
   private pb::UnknownFieldSet _unknownFields;
@@ -319,7 +563,7 @@ public sealed partial class ItemHeader : pb::IMessage<ItemHeader> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[2]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[3]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -504,7 +748,7 @@ public sealed partial class ProtoHeader : pb::IMessage<ProtoHeader> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[3]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[4]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -625,7 +869,7 @@ public sealed partial class ProtoMapping : pb::IMessage<ProtoMapping> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[4]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[5]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -782,7 +1026,7 @@ public sealed partial class ProtoJoin : pb::IMessage<ProtoJoin> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[5]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[6]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -903,7 +1147,7 @@ public sealed partial class Wall : pb::IMessage<Wall> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[6]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[7]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1100,7 +1344,7 @@ public sealed partial class ProtoVector2 : pb::IMessage<ProtoVector2> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[7]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[8]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1257,7 +1501,7 @@ public sealed partial class BuildMazeMsg : pb::IMessage<BuildMazeMsg> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public static pbr::MessageDescriptor Descriptor {
-    get { return global::ModelsReflection.Descriptor.MessageTypes[8]; }
+    get { return global::ModelsReflection.Descriptor.MessageTypes[9]; }
   }
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
