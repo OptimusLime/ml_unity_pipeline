@@ -1,0 +1,3 @@
+[submodule "assets/BGCurve"]
+	path = assets/BGCurve
+	url = https://github.com/bansheeGz/BGCurve.git

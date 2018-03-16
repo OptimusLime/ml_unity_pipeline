@@ -1,0 +1,1 @@
+ln -s $PWD/assets/BGCurve/Assets/BansheeGz/BGCurve/ $PWD/unity/RenderJobs/Assets/BGCurve

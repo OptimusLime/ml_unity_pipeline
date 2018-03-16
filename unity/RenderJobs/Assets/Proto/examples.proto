@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+message PCGPoint 
+{
+    float x = 1;
+    float y = 2;
+}
+
+message PCGViewport
+{
+    float xmin = 1;
+    float xmax = 2;
+    float ymin = 3;
+    float ymax = 4;
+}
+
+message PCGLeaf
+{
+    float length = 1;
+    float width = 2;
+    float angle = 3;
+    PCGPoint center = 4;
+}
+
+message PCGFlower 
+{
+    PCGPoint center = 1;
+    float radius = 2;
+    float angle = 3;
+}
+
+message PCGBranch 
+{
+    PCGPoint start = 1;
+    PCGPoint end = 2;
+    float width = 3;
+    float angle = 4;
+}
+
+message PCGVineItem
+{
+    string type = 1;
+    int32 n = 2;
+//    PCGVineItem next = 2;
+//    PCGVineItem parent = 3;
+    PCGLeaf leaf = 3;
+    PCGFlower flower = 4;
+    PCGBranch branch = 5;
+}
+
+message PCGVineView
+{
+    int32 depth = 1;
+    PCGPoint pos = 2;
+    float width = 3;
+    float angle = 4;
+    repeated int32 img_size = 5;
+    PCGViewport viewport = 6;
+    repeated PCGVineItem vines = 7;
+}

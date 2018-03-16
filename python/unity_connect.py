@@ -4,6 +4,7 @@ import json
 import argparse
 from datetime import datetime
 from proto.models_pb2 import *
+from proto.examples_pb2 import *
 import struct
 import pika
 import uuid
