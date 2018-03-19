@@ -371,7 +371,7 @@ def main(simTightness=0.02, boundsTightness=0.001,
                 })
 
             # Terminate? TODO: Add futures/pyro terminate
-            terminate_prob = 0.25
+            terminate_prob = 0.025
             # do we terminate here and now?
             if proc_vines._flip(oc.terminate,
                                 VTA(terminate_prob)):
