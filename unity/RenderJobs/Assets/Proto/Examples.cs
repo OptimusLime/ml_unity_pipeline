@@ -36,7 +36,11 @@ public static partial class ExamplesReflection {
           "Q0dWaW5lVmlldxINCgVkZXB0aBgBIAEoBRIWCgNwb3MYAiABKAsyCS5QQ0dQ",
           "b2ludBINCgV3aWR0aBgDIAEoAhINCgVhbmdsZRgEIAEoAhIQCghpbWdfc2l6",
           "ZRgFIAMoBRIeCgh2aWV3cG9ydBgGIAEoCzIMLlBDR1ZpZXdwb3J0EhsKBXZp",
-          "bmVzGAcgAygLMgwuUENHVmluZUl0ZW1iBnByb3RvMw=="));
+          "bmVzGAcgAygLMgwuUENHVmluZUl0ZW0iKgoHUHJvdG9WMxIJCgF4GAEgASgC",
+          "EgkKAXkYAiABKAISCQoBehgDIAEoAiJ9CgtQcm90b1NwbGluZRIMCgR0eXBl",
+          "GAEgASgJEhEKCXByZWNpc2lvbhgCIAEoAhIgCg5jb250cm9sX3BvaW50cxgD",
+          "IAMoCzIILlByb3RvVjMSFAoMc2NyZWVuX3dpZHRoGAQgASgFEhUKDXNjcmVl",
+          "bl9oZWlnaHQYBSABKAViBnByb3RvMw=="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -46,7 +50,9 @@ public static partial class ExamplesReflection {
           new pbr::GeneratedClrTypeInfo(typeof(global::PCGFlower), global::PCGFlower.Parser, new[]{ "Center", "Radius", "Angle" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::PCGBranch), global::PCGBranch.Parser, new[]{ "Start", "End", "Width", "Angle" }, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::PCGVineItem), global::PCGVineItem.Parser, new[]{ "Type", "N", "Leaf", "Flower", "Branch" }, null, null, null),
-          new pbr::GeneratedClrTypeInfo(typeof(global::PCGVineView), global::PCGVineView.Parser, new[]{ "Depth", "Pos", "Width", "Angle", "ImgSize", "Viewport", "Vines" }, null, null, null)
+          new pbr::GeneratedClrTypeInfo(typeof(global::PCGVineView), global::PCGVineView.Parser, new[]{ "Depth", "Pos", "Width", "Angle", "ImgSize", "Viewport", "Vines" }, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::ProtoV3), global::ProtoV3.Parser, new[]{ "X", "Y", "Z" }, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::ProtoSpline), global::ProtoSpline.Parser, new[]{ "Type", "Precision", "ControlPoints", "ScreenWidth", "ScreenHeight" }, null, null, null)
         }));
   }
   #endregion
@@ -1607,6 +1613,424 @@ public sealed partial class PCGVineView : pb::IMessage<PCGVineView> {
         }
         case 58: {
           vines_.AddEntriesFrom(input, _repeated_vines_codec);
+          break;
+        }
+      }
+    }
+  }
+
+}
+
+public sealed partial class ProtoV3 : pb::IMessage<ProtoV3> {
+  private static readonly pb::MessageParser<ProtoV3> _parser = new pb::MessageParser<ProtoV3>(() => new ProtoV3());
+  private pb::UnknownFieldSet _unknownFields;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pb::MessageParser<ProtoV3> Parser { get { return _parser; } }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pbr::MessageDescriptor Descriptor {
+    get { return global::ExamplesReflection.Descriptor.MessageTypes[7]; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  pbr::MessageDescriptor pb::IMessage.Descriptor {
+    get { return Descriptor; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoV3() {
+    OnConstruction();
+  }
+
+  partial void OnConstruction();
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoV3(ProtoV3 other) : this() {
+    x_ = other.x_;
+    y_ = other.y_;
+    z_ = other.z_;
+    _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoV3 Clone() {
+    return new ProtoV3(this);
+  }
+
+  /// <summary>Field number for the "x" field.</summary>
+  public const int XFieldNumber = 1;
+  private float x_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public float X {
+    get { return x_; }
+    set {
+      x_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "y" field.</summary>
+  public const int YFieldNumber = 2;
+  private float y_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public float Y {
+    get { return y_; }
+    set {
+      y_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "z" field.</summary>
+  public const int ZFieldNumber = 3;
+  private float z_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public float Z {
+    get { return z_; }
+    set {
+      z_ = value;
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override bool Equals(object other) {
+    return Equals(other as ProtoV3);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public bool Equals(ProtoV3 other) {
+    if (ReferenceEquals(other, null)) {
+      return false;
+    }
+    if (ReferenceEquals(other, this)) {
+      return true;
+    }
+    if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(X, other.X)) return false;
+    if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Y, other.Y)) return false;
+    if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Z, other.Z)) return false;
+    return Equals(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override int GetHashCode() {
+    int hash = 1;
+    if (X != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(X);
+    if (Y != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Y);
+    if (Z != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Z);
+    if (_unknownFields != null) {
+      hash ^= _unknownFields.GetHashCode();
+    }
+    return hash;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override string ToString() {
+    return pb::JsonFormatter.ToDiagnosticString(this);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void WriteTo(pb::CodedOutputStream output) {
+    if (X != 0F) {
+      output.WriteRawTag(13);
+      output.WriteFloat(X);
+    }
+    if (Y != 0F) {
+      output.WriteRawTag(21);
+      output.WriteFloat(Y);
+    }
+    if (Z != 0F) {
+      output.WriteRawTag(29);
+      output.WriteFloat(Z);
+    }
+    if (_unknownFields != null) {
+      _unknownFields.WriteTo(output);
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int CalculateSize() {
+    int size = 0;
+    if (X != 0F) {
+      size += 1 + 4;
+    }
+    if (Y != 0F) {
+      size += 1 + 4;
+    }
+    if (Z != 0F) {
+      size += 1 + 4;
+    }
+    if (_unknownFields != null) {
+      size += _unknownFields.CalculateSize();
+    }
+    return size;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(ProtoV3 other) {
+    if (other == null) {
+      return;
+    }
+    if (other.X != 0F) {
+      X = other.X;
+    }
+    if (other.Y != 0F) {
+      Y = other.Y;
+    }
+    if (other.Z != 0F) {
+      Z = other.Z;
+    }
+    _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(pb::CodedInputStream input) {
+    uint tag;
+    while ((tag = input.ReadTag()) != 0) {
+      switch(tag) {
+        default:
+          _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+          break;
+        case 13: {
+          X = input.ReadFloat();
+          break;
+        }
+        case 21: {
+          Y = input.ReadFloat();
+          break;
+        }
+        case 29: {
+          Z = input.ReadFloat();
+          break;
+        }
+      }
+    }
+  }
+
+}
+
+public sealed partial class ProtoSpline : pb::IMessage<ProtoSpline> {
+  private static readonly pb::MessageParser<ProtoSpline> _parser = new pb::MessageParser<ProtoSpline>(() => new ProtoSpline());
+  private pb::UnknownFieldSet _unknownFields;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pb::MessageParser<ProtoSpline> Parser { get { return _parser; } }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public static pbr::MessageDescriptor Descriptor {
+    get { return global::ExamplesReflection.Descriptor.MessageTypes[8]; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  pbr::MessageDescriptor pb::IMessage.Descriptor {
+    get { return Descriptor; }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoSpline() {
+    OnConstruction();
+  }
+
+  partial void OnConstruction();
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoSpline(ProtoSpline other) : this() {
+    type_ = other.type_;
+    precision_ = other.precision_;
+    controlPoints_ = other.controlPoints_.Clone();
+    screenWidth_ = other.screenWidth_;
+    screenHeight_ = other.screenHeight_;
+    _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public ProtoSpline Clone() {
+    return new ProtoSpline(this);
+  }
+
+  /// <summary>Field number for the "type" field.</summary>
+  public const int TypeFieldNumber = 1;
+  private string type_ = "";
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public string Type {
+    get { return type_; }
+    set {
+      type_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+    }
+  }
+
+  /// <summary>Field number for the "precision" field.</summary>
+  public const int PrecisionFieldNumber = 2;
+  private float precision_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public float Precision {
+    get { return precision_; }
+    set {
+      precision_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "control_points" field.</summary>
+  public const int ControlPointsFieldNumber = 3;
+  private static readonly pb::FieldCodec<global::ProtoV3> _repeated_controlPoints_codec
+      = pb::FieldCodec.ForMessage(26, global::ProtoV3.Parser);
+  private readonly pbc::RepeatedField<global::ProtoV3> controlPoints_ = new pbc::RepeatedField<global::ProtoV3>();
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public pbc::RepeatedField<global::ProtoV3> ControlPoints {
+    get { return controlPoints_; }
+  }
+
+  /// <summary>Field number for the "screen_width" field.</summary>
+  public const int ScreenWidthFieldNumber = 4;
+  private int screenWidth_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int ScreenWidth {
+    get { return screenWidth_; }
+    set {
+      screenWidth_ = value;
+    }
+  }
+
+  /// <summary>Field number for the "screen_height" field.</summary>
+  public const int ScreenHeightFieldNumber = 5;
+  private int screenHeight_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int ScreenHeight {
+    get { return screenHeight_; }
+    set {
+      screenHeight_ = value;
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override bool Equals(object other) {
+    return Equals(other as ProtoSpline);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public bool Equals(ProtoSpline other) {
+    if (ReferenceEquals(other, null)) {
+      return false;
+    }
+    if (ReferenceEquals(other, this)) {
+      return true;
+    }
+    if (Type != other.Type) return false;
+    if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Precision, other.Precision)) return false;
+    if(!controlPoints_.Equals(other.controlPoints_)) return false;
+    if (ScreenWidth != other.ScreenWidth) return false;
+    if (ScreenHeight != other.ScreenHeight) return false;
+    return Equals(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override int GetHashCode() {
+    int hash = 1;
+    if (Type.Length != 0) hash ^= Type.GetHashCode();
+    if (Precision != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Precision);
+    hash ^= controlPoints_.GetHashCode();
+    if (ScreenWidth != 0) hash ^= ScreenWidth.GetHashCode();
+    if (ScreenHeight != 0) hash ^= ScreenHeight.GetHashCode();
+    if (_unknownFields != null) {
+      hash ^= _unknownFields.GetHashCode();
+    }
+    return hash;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public override string ToString() {
+    return pb::JsonFormatter.ToDiagnosticString(this);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void WriteTo(pb::CodedOutputStream output) {
+    if (Type.Length != 0) {
+      output.WriteRawTag(10);
+      output.WriteString(Type);
+    }
+    if (Precision != 0F) {
+      output.WriteRawTag(21);
+      output.WriteFloat(Precision);
+    }
+    controlPoints_.WriteTo(output, _repeated_controlPoints_codec);
+    if (ScreenWidth != 0) {
+      output.WriteRawTag(32);
+      output.WriteInt32(ScreenWidth);
+    }
+    if (ScreenHeight != 0) {
+      output.WriteRawTag(40);
+      output.WriteInt32(ScreenHeight);
+    }
+    if (_unknownFields != null) {
+      _unknownFields.WriteTo(output);
+    }
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public int CalculateSize() {
+    int size = 0;
+    if (Type.Length != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
+    }
+    if (Precision != 0F) {
+      size += 1 + 4;
+    }
+    size += controlPoints_.CalculateSize(_repeated_controlPoints_codec);
+    if (ScreenWidth != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeInt32Size(ScreenWidth);
+    }
+    if (ScreenHeight != 0) {
+      size += 1 + pb::CodedOutputStream.ComputeInt32Size(ScreenHeight);
+    }
+    if (_unknownFields != null) {
+      size += _unknownFields.CalculateSize();
+    }
+    return size;
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(ProtoSpline other) {
+    if (other == null) {
+      return;
+    }
+    if (other.Type.Length != 0) {
+      Type = other.Type;
+    }
+    if (other.Precision != 0F) {
+      Precision = other.Precision;
+    }
+    controlPoints_.Add(other.controlPoints_);
+    if (other.ScreenWidth != 0) {
+      ScreenWidth = other.ScreenWidth;
+    }
+    if (other.ScreenHeight != 0) {
+      ScreenHeight = other.ScreenHeight;
+    }
+    _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+  }
+
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  public void MergeFrom(pb::CodedInputStream input) {
+    uint tag;
+    while ((tag = input.ReadTag()) != 0) {
+      switch(tag) {
+        default:
+          _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+          break;
+        case 10: {
+          Type = input.ReadString();
+          break;
+        }
+        case 21: {
+          Precision = input.ReadFloat();
+          break;
+        }
+        case 26: {
+          controlPoints_.AddEntriesFrom(input, _repeated_controlPoints_codec);
+          break;
+        }
+        case 32: {
+          ScreenWidth = input.ReadInt32();
+          break;
+        }
+        case 40: {
+          ScreenHeight = input.ReadInt32();
           break;
         }
       }

@@ -58,3 +58,19 @@ message PCGVineView
     PCGViewport viewport = 6;
     repeated PCGVineItem vines = 7;
 }
+
+message ProtoV3
+{
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+message ProtoSpline
+{
+    string type = 1;
+    float precision = 2;
+    repeated ProtoV3 control_points = 3;
+    int32 screen_width = 4;
+    int32 screen_height = 5;
+}

@@ -93,6 +93,8 @@ namespace Jobs
 
         public Promise<ProtoMessage> FirstContactMessage(ProtoContact protoContact)
         {
+            Debug.Log("Contact received");
+
             // send back a protojoin message with all of our class information (as it currently is)
             return new Promise<ProtoMessage>((resolve, reject) =>
             {

@@ -361,6 +361,7 @@ def render_update(full_geo, viewport, print_render=False):
     }
 
     vv = PCGVineView()
+    # ss = ProtoScreenshot()
     from json import dumps
 
     # parse our json into the actual object
