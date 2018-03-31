@@ -3,6 +3,7 @@ using System.Collections;
 using Dreamteck.Splines; //Include the Splines namespace
 using RSG;
 using Jobs;
+using System;
 
 //[ExecuteInEditMode]
 public class BasicSpline : BaseHandler
@@ -57,6 +58,8 @@ public class BasicSpline : BaseHandler
             sc = this.gameObject.AddComponent<SplineComputer>();
 
         sc.space = SplineComputer.Space.Local;
+        sc.type = (Spline.Type)Enum.Parse(typeof(Spline.Type), spline.Type); 
+            //Spline.Type.Bezier;
         //base.Start();
 
         //Create a new B-spline with precision 0.9

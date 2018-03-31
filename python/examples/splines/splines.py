@@ -4,6 +4,7 @@ from proto.examples_pb2 import ProtoSpline, ProtoV3
 from proto.models_pb2 import ProtoScreenShot
 import numpy as np
 
+
 # queue up
 queue_name = "task_queue"
 
