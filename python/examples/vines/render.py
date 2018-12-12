@@ -312,27 +312,27 @@ def geo_to_json(geo_state):
     if "leaf" in geo_state:
         gleaf = geo_state["leaf"]
         base_state["leaf"] = {
-            "length": gleaf["length"].data[0],
-            "width": gleaf["width"].data[0],
-            "angle": gleaf["angle"].data[0],
-            "center": {"x": gleaf["center"].x, "y": gleaf["center"].y}
+            "length": gleaf["length"].item(),
+            "width": gleaf["width"].item(),
+            "angle": gleaf["angle"].item(),
+            "center": {"x": gleaf["center"].x.item(), "y": gleaf["center"].y.item()}
         }
 
     if "branch" in geo_state:
         gbranch = geo_state["branch"]
         base_state["branch"] = {
-            "start": {"x": gbranch["start"].x, "y": gbranch["start"].y},
-            "end": {"x": gbranch["end"].x, "y": gbranch["end"].y},
-            "width": gbranch["width"].data[0],
-            "angle": gbranch["angle"].data[0]
+            "start": {"x": gbranch["start"].x.item(), "y": gbranch["start"].y.item()},
+            "end": {"x": gbranch["end"].x.item(), "y": gbranch["end"].y.item()},
+            "width": gbranch["width"].item(),
+            "angle": gbranch["angle"].item()
         }
 
     if "flower" in geo_state:
         gflower = geo_state["flower"]
         base_state["flower"] = {
-            "center": {"x": gflower["center"].x, "y": gflower["center"].y},
-            "radius": gflower["radius"].data[0],
-            "angle": gflower["angle"].data[0]
+            "center": {"x": gflower["center"].x.item(), "y": gflower["center"].y.item()},
+            "radius": gflower["radius"].item(),
+            "angle": gflower["angle"].item()
         }
 
     # send back the json info for the whole state
@@ -351,17 +351,17 @@ def render_update(full_geo, viewport, print_render=False):
 
     vine_json = {
         "depth": init_state["depth"],
-        "pos": {"x": init_state["pos"].x, "y": init_state["pos"].y},
-        "width": init_state["width"].data[0],
-        "angle": init_state["angle"].data[0],
+        "pos": {"x": init_state["pos"].x.item(), "y": init_state["pos"].y.item()},
+        "width": init_state["width"].item(),
+        "angle": init_state["angle"].item(),
         "img_size": list(init_state['img_size']),
         "viewport": {"xmin": start_viewport.xmin, "xmax": start_viewport.xmax,
                      "ymin": start_viewport.ymin, "ymax": start_viewport.ymax},
         "vines": [geo_to_json(state) for state in geo_states]
     }
-
+    # bb()
     vv = PCGVineView()
-    # ss = ProtoScreenshot()
+    ss = ProtoScreenshot()
     from json import dumps
 
     # parse our json into the actual object
@@ -370,45 +370,45 @@ def render_update(full_geo, viewport, print_render=False):
     queue_name = 'task_queue'
     print("Getting class information from Unity")
     client = BasicClient(queue_name).connect()
-    
-    from IPython import embed
-    embed()
 
-    cs_response = client.sync_call(client.get_message(vv))
+    # from IPython import embed
+    # embed()
 
-    # create our empty canvas
-    img_surface = empty_surface(*img_size, is_white=True)
+    cs_response = client.sync_call(client.get_message(vv, ss))
+    bb()
+    # # create our empty canvas
+    # img_surface = empty_surface(*img_size, is_white=True)
 
-    # draw context
-    context = cairocffi.Context(img_surface)
+    # # draw context
+    # context = cairocffi.Context(img_surface)
 
-    # set context with initial viewport and scaling
-    vwidth, vheight = start_viewport.xmax - start_viewport.xmin, start_viewport.ymax - start_viewport.ymin
-    context.scale(img_size[0]/vwidth, img_size[1]/vheight)
-    context.translate(-start_viewport.xmin, -start_viewport.ymin)
+    # # set context with initial viewport and scaling
+    # vwidth, vheight = start_viewport.xmax - start_viewport.xmin, start_viewport.ymax - start_viewport.ymin
+    # context.scale(img_size[0]/vwidth, img_size[1]/vheight)
+    # context.translate(-start_viewport.xmin, -start_viewport.ymin)
 
-    # all states in ascending order
-    # we'll subset out specific types and render accordingly
-    all_states = sorted(geo_states, key=lambda x: x["n"])
+    # # all states in ascending order
+    # # we'll subset out specific types and render accordingly
+    # all_states = sorted(geo_states, key=lambda x: x["n"])
 
-    # context render fct
-    render_type_fct = partial(render_type, context)
-    subset_fct = partial(subset_type, all_states)
+    # # context render fct
+    # render_type_fct = partial(render_type, context)
+    # subset_fct = partial(subset_type, all_states)
 
-    # render branches first
-    list(map(render_type_fct, subset_fct('branch')))
-    list(map(render_type_fct, subset_fct('leaf')))
-    list(map(render_type_fct, subset_fct('flower')))
+    # # render branches first
+    # list(map(render_type_fct, subset_fct('branch')))
+    # list(map(render_type_fct, subset_fct('leaf')))
+    # list(map(render_type_fct, subset_fct('flower')))
 
-    # return to our tensor
-    pt_img = surface_to_pt(img_surface)
+    # # return to our tensor
+    # pt_img = surface_to_pt(img_surface)
 
-    if print_render:
-        vis = Visdom(env='paint')
-        vis.image(pt_img.data.numpy())
+    # if print_render:
+    #     vis = Visdom(env='paint')
+    #     vis.image(pt_img.data.numpy())
 
-    # adjust viewport? not currently
-    return PtImg2D(pt_img=pt_img), viewport
+    # # adjust viewport? not currently
+    # return PtImg2D(pt_img=pt_img), viewport
 
 
 if __name__ == "__main__":

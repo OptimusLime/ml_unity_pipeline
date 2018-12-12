@@ -10,7 +10,7 @@ from proto.examples_pb2 import ProtoSpline, ProtoV3
 from proto.models_pb2 import ProtoScreenShot
 from IPython import embed
 from pdb import set_trace as bb
-import visdom 
+import visdom
 from math import sqrt
 
 
@@ -87,7 +87,7 @@ def model(N, width, height, spline_type):
     points = [torch.zeros(3)]
 
     # normal around zero
-    points.append(pyro.sample("root", 
+    points.append(pyro.sample("root",
                               dist.Normal(torch.zeros(3),
                                           torch.ones(3))) - points[0])
 
@@ -109,7 +109,7 @@ def model(N, width, height, spline_type):
 
 def view_images(imgs):
     all_imgs = torch.cat(list(map(
-            lambda x: x.pt_img.view([-1] + list(x.pt_img.size())).permute([0, 3, 1, 2]), 
+            lambda x: x.pt_img.view([-1] + list(x.pt_img.size())).permute([0, 3, 1, 2]),
             imgs)))
 
     vv.images(all_imgs.data.numpy(), nrow=int(sqrt(len(imgs))))
@@ -119,9 +119,9 @@ def forward_and_view(point_count, width, height, spline_type):
     pts, imgs = model(point_count, width, height, spline_type)
     view_images(imgs)
 
-spline_type = "Bezier"
+spline_type = "Hermite"
 points, width, height = 16, 100, 100
 forward_and_view(points, width, height, spline_type)
-embed()
+# embed()
 
 

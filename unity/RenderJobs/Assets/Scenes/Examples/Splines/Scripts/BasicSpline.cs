@@ -58,7 +58,15 @@ public class BasicSpline : BaseHandler
             sc = this.gameObject.AddComponent<SplineComputer>();
 
         sc.space = SplineComputer.Space.Local;
-        sc.type = (Spline.Type)Enum.Parse(typeof(Spline.Type), spline.Type); 
+        try
+        {
+            sc.type = (Spline.Type)Enum.Parse(typeof(Spline.Type), spline.Type);
+
+        }
+        catch (System.Exception)
+        {
+            sc.type = Spline.Type.Bezier;
+        }
             //Spline.Type.Bezier;
         //base.Start();
 
@@ -70,7 +78,7 @@ public class BasicSpline : BaseHandler
         for (var i = 0; i < spline.ControlPoints.Count; i++)
             sp[i] = pointToLocation(Radius, Width, protoV3ToV3(spline.ControlPoints[i]));
 
-        //set points in computer 
+        //set points in computer
         sc.SetPoints(sp, SplineComputer.Space.Local);
 
         ////Evaluate the spline and get an array of values
