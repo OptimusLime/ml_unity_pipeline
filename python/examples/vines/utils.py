@@ -1,40 +1,41 @@
-from torch.autograd import Variable as V
-from torch import Tensor as T
+import torch
 from torch import is_tensor, cat
 from sys import float_info
+
+T = torch.tensor
 
 # ----------------------------------------------------------------------------
 # Globals / constants
 
 
-# create torch variable around tesnor with input X
+# create torch tensor with input X
 def A(x): return [x]
 
 
 def TA(x): return T(A(x))
 
 
-def VT(x): return V(T(x))
+def VT(x): return T(x)
 
 
-def VTA(x): return V(TA(x))
+def VTA(x): return TA(x)
 
 
 # basic vector additions and lerping
 class Vector2():
     def __init__(self, x=0, y=0):
-        if is_tensor(x) or isinstance(x, V):
-            x, y = x.data[0], y.data[0]
+        if is_tensor(x):
+            x, y = x.item(), y.item()
 
         self.pt_val = VT([x, y])
 
     @property
     def x(self):
-        return self.pt_val.data[0]
+        return self.pt_val[0].item()
 
     @property
     def y(self):
-        return self.pt_val.data[1]
+        return self.pt_val[1].item()
 
     def __repr__(self):
         return "{:0.5},{:0.5}".format(self.x, self.y)
@@ -44,7 +45,7 @@ class Vector2():
         return self
 
     def clone(self):
-        return Vector2(*self.pt_val.data)
+        return Vector2(*self.pt_val)
 
     # linear interpolate between two points us and them
     def lerp(self, other, zero_one):
