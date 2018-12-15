@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+message ProtoVector3
+{
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+message ProtoSceneEnvironment
+{
+    float hour_of_day = 1;
+    string weather = 2;
+}
+
+message ProtoTrafficLight
+{
+    int32 light_type = 1;
+    int32 light_status = 2;
+    ProtoVector3 location = 3;
+    ProtoVector3 orientation = 4;
+}
+
+
+message ProtoTrafficScene
+{
+    string scene_name = 1;
+    ProtoSceneEnvironment environment = 2;
+    repeated ProtoTrafficLight traffic_lights = 3;
+    int32 screen_width = 4;
+    int32 screen_height = 5;
+}

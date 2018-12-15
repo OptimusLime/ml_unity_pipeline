@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-message PCGPoint 
+message PCGPoint
 {
     float x = 1;
     float y = 2;
@@ -22,14 +22,14 @@ message PCGLeaf
     PCGPoint center = 4;
 }
 
-message PCGFlower 
+message PCGFlower
 {
     PCGPoint center = 1;
     float radius = 2;
     float angle = 3;
 }
 
-message PCGBranch 
+message PCGBranch
 {
     PCGPoint start = 1;
     PCGPoint end = 2;
@@ -74,3 +74,5 @@ message ProtoSpline
     int32 screen_width = 4;
     int32 screen_height = 5;
 }
+
+

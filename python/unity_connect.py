@@ -3,6 +3,7 @@ from pdb import set_trace as bb
 import json
 import argparse
 from datetime import datetime
+from proto.traffic_pb2 import *
 from proto.models_pb2 import *
 from proto.examples_pb2 import *
 import struct
@@ -23,7 +24,7 @@ def proto_join_to_dict(proto_join):
         class_ix = cmap.key
         Classname = globals()[cmap.value]
         proto_dict[Classname] = class_ix
-    
+
     return proto_dict
 
 
@@ -75,7 +76,7 @@ class ProtoMessage():
 
         # serialize our header from the full msg we've constructed
         header_prepend = self.msg_content['header'].SerializeToString()
-        
+
         print("Header len {}".format(len(header_prepend)))
 
         # let the header length be known
@@ -105,14 +106,14 @@ class MessageWrapper():
         return (ProtoMessage(self.type_to_ix)
                 .add_to_message(ProtoContact())
                 .get_bytes())
-    
+
     # agree on classes from a proto_join object
     def expand_classes(self, class_map):
         self.type_to_ix = {}
-        
+
         for Classname, class_ix in class_map.items():
             self.type_to_ix[Classname] = class_ix
-        
+
         self.ix_to_type = {val: k for k, val in self.type_to_ix.items()}
 
     # here we take in byte_data, then read the header and body from the data
@@ -166,7 +167,7 @@ class MessageWrapper():
             proto_object.ParseFromString(obj_bytes)
 
             # record object to pass to router
-            header_and_objects.append((proto_item, proto_object))       
+            header_and_objects.append((proto_item, proto_object))
 
         # decomposed our message into proto objects passed across the stream
         return header_and_objects
@@ -191,17 +192,17 @@ class BasicClient(object):
     def on_response(self, ch, method, props, body):
         if self.corr_id == props.correlation_id:
             self.response = body
-    
+
     # we send call and response
     def connect(self):
 
         # first message is to contact the server farm
         contact_message = self.msg_wrap.join_message()
-        
+
         # get information about the classes we need to map to
         proto_res_header_and_obj = self.sync_call(contact_message)
 
-        # get the first object in the array, 
+        # get the first object in the array,
         # adn then get the proto object (ignore the header)
         pjoin_obj = proto_res_header_and_obj[0][1]
 
@@ -217,7 +218,7 @@ class BasicClient(object):
         # continually append the proto objects
         for proto_obj in proto_args:
             proto_msg = proto_msg.add_to_message(proto_obj)
-        
+
         # then get our mesage
         return proto_msg.get_bytes()
 
@@ -234,7 +235,7 @@ class BasicClient(object):
                                    body=msg_body)
         while self.response is None:
             self.connection.process_data_events()
-        
+
         return self.msg_wrap.decode_to_proto(self.response)
 
 if __name__ == '__main__':
@@ -245,7 +246,7 @@ if __name__ == '__main__':
 
     print("Getting class information from Unity")
     client = BasicClient(queue_name).connect()
-    
+
     # lets say hello
     print("Class info achieved, saying hello")
     hello_friend = ProtoHello()

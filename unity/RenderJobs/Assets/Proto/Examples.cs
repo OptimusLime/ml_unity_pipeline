@@ -457,7 +457,7 @@ public sealed partial class PCGLeaf : pb::IMessage<PCGLeaf> {
     length_ = other.length_;
     width_ = other.width_;
     angle_ = other.angle_;
-    Center = other.center_ != null ? other.Center.Clone() : null;
+    center_ = other.center_ != null ? other.center_.Clone() : null;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
 
@@ -673,7 +673,7 @@ public sealed partial class PCGFlower : pb::IMessage<PCGFlower> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public PCGFlower(PCGFlower other) : this() {
-    Center = other.center_ != null ? other.Center.Clone() : null;
+    center_ = other.center_ != null ? other.center_.Clone() : null;
     radius_ = other.radius_;
     angle_ = other.angle_;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -864,8 +864,8 @@ public sealed partial class PCGBranch : pb::IMessage<PCGBranch> {
 
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public PCGBranch(PCGBranch other) : this() {
-    Start = other.start_ != null ? other.Start.Clone() : null;
-    End = other.end_ != null ? other.End.Clone() : null;
+    start_ = other.start_ != null ? other.start_.Clone() : null;
+    end_ = other.end_ != null ? other.end_.Clone() : null;
     width_ = other.width_;
     angle_ = other.angle_;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1091,9 +1091,9 @@ public sealed partial class PCGVineItem : pb::IMessage<PCGVineItem> {
   public PCGVineItem(PCGVineItem other) : this() {
     type_ = other.type_;
     n_ = other.n_;
-    Leaf = other.leaf_ != null ? other.Leaf.Clone() : null;
-    Flower = other.flower_ != null ? other.Flower.Clone() : null;
-    Branch = other.branch_ != null ? other.Branch.Clone() : null;
+    leaf_ = other.leaf_ != null ? other.leaf_.Clone() : null;
+    flower_ = other.flower_ != null ? other.flower_.Clone() : null;
+    branch_ = other.branch_ != null ? other.branch_.Clone() : null;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
 
@@ -1353,11 +1353,11 @@ public sealed partial class PCGVineView : pb::IMessage<PCGVineView> {
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   public PCGVineView(PCGVineView other) : this() {
     depth_ = other.depth_;
-    Pos = other.pos_ != null ? other.Pos.Clone() : null;
+    pos_ = other.pos_ != null ? other.pos_.Clone() : null;
     width_ = other.width_;
     angle_ = other.angle_;
     imgSize_ = other.imgSize_.Clone();
-    Viewport = other.viewport_ != null ? other.Viewport.Clone() : null;
+    viewport_ = other.viewport_ != null ? other.viewport_.Clone() : null;
     vines_ = other.vines_.Clone();
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
