@@ -50,8 +50,8 @@ def bbox_leaf(new_leaf):
     p2 = Vector2(-w2, l2)
     p3 = Vector2(w2, l2)
     # just grab float value not tensor val
-    f_sin = torch.sin(new_leaf["angle"]).data[0]
-    f_cos = torch.cos(new_leaf["angle"]).data[0]
+    f_sin = torch.sin(new_leaf["angle"]).item()
+    f_cos = torch.cos(new_leaf["angle"]).item()
     center = new_leaf["center"]
     # is this pivot stuff a bug, it says p0, p0, p0, p0?
     # https://github.com/probmods/webppl/blob/gh-pages-vinesDemoFreeSketch/demos/vines/js/utils.js#L364
@@ -71,7 +71,7 @@ def bbox_leaf(new_leaf):
 # https://github.com/probmods/webppl/blob/gh-pages-vinesDemoFreeSketch/demos/vines/js/utils.js#L376
 def bbox_flower(new_flower):
     f_center = new_flower["center"]
-    radius = new_flower["radius"].data[0]
+    radius = new_flower["radius"].item()
     # get flower min/max, and use those as the bounding box
     flower_min = Vector2(f_center.x - radius, f_center.y - radius)
     flower_max = Vector2(f_center.x + radius, f_center.y + radius)
@@ -238,7 +238,7 @@ def main(simTightness=0.02, boundsTightness=0.001,
     start_viewport = Viewport(**{"xmin": -12, "xmax": 12, "ymin": -22, "ymax": 2})
 
     vis = Visdom(env='paint')
-    vis.image(target.pt_img.data.numpy())
+    vis.image(target.pt_img.numpy())
 
     # basic sim function, send in edge weight for closure
     similarity_fct = make_gradient_weight_similarity_fct(1.5)
@@ -302,7 +302,7 @@ def main(simTightness=0.02, boundsTightness=0.001,
             "width": init_state["width"],
             "prev_branch": init_state["prev_branch"]
         })
-        start_state["img_size"] = target.pt_img.data.shape[1:]
+        start_state["img_size"] = target.pt_img.shape[1:]
         start_state["viewport"] = start_viewport.clone()
 
         # hold our current procedural vine object
@@ -347,7 +347,7 @@ def main(simTightness=0.02, boundsTightness=0.001,
                 llength = lwidth * leafAspect
                 angmean = np.pi / 4 if leaf_sopt == 'left' else -np.pi / 4
                 langle = new_branch["angle"] \
-                    + proc_vines._gaussian(oc.leaf_angle, VTA(angmean), VTA(np.pi / 12)).data[0]
+                    + proc_vines._gaussian(oc.leaf_angle, VTA(angmean), VTA(np.pi / 12)).item()
 
                 lstart = new_branch["start"].clone().lerp(
                     new_branch["end"], 0.5)
@@ -388,14 +388,14 @@ def main(simTightness=0.02, boundsTightness=0.001,
                 # TODO: Add as future
                 # pyro.future(lambda x: )
                 if not proc_vines.terminated \
-                        and new_state["width"].data[0] > min_width \
+                        and new_state["width"].item() > min_width \
                         and proc_vines._flip(oc.reup_branch_one, VTA(0.66)):
                     # create another branch!
                     create_branch(new_state)
 
                     # TODO: Add as future pyro.future(lambda x: )
                     if not proc_vines.terminated and \
-                            new_state["width"].data[0] > min_width and \
+                            new_state["width"].item() > min_width and \
                             proc_vines._flip(oc.reup_branch_two, VTA(0.5)):
 
                         # if we fliipped yes, keep the good times going
@@ -424,7 +424,7 @@ if __name__ == "__main__":
                         help='target to match')
 
     parser.add_argument('-iw', "--initial_width", type=float,
-                        help='width of lines to draw')
+                        help='width of lines to draw', default=0.3)
 
     args = parser.parse_args()
 

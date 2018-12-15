@@ -3,10 +3,8 @@ import cairocffi
 from numpy import genfromtxt
 from os.path import splitext
 import torch
-from torch import Tensor as T
 from torch import zeros as ZT
 from torch import ones as OT
-from torch.autograd import Variable as V
 import torch.nn.functional as F
 import numpy as np
 from visdom import Visdom
@@ -21,6 +19,7 @@ from unity_connect import BasicClient
 getbuffer = np.getbuffer if hasattr(np, "getbuffer") else memoryview
 two_pi = 2*np.pi
 
+T = torch.tensor
 
 # pytorch object holding image data
 # that can be rendered to screen if required
@@ -40,26 +39,26 @@ class PtImg2D():
             # nope
             if img_path is None:
                 # create all ones (white)
-                self.pt_img = V(OT([4, height, width])) \
+                self.pt_img = OT([4, height, width]) \
                     if empty_white \
-                    else V(ZT([4, height, width]))
+                    else ZT([4, height, width])
             else:
                 # load into a ImageSurface, then read into numpy -> pytorch var
                 self.pt_img = surface_to_pt(img_to_surface(img_path))
 
         # height and width pulled from shape
-        self.height, self.width = self.pt_img.data.shape[1:]
+        self.height, self.width = self.pt_img.shape[1:]
 
     # compare img versus sobel tgt
     # https://github.com/probmods/webppl/blob/gh-pages-vinesDemoFreeSketch/demos/vines/js/utils.js#L75
     def weighted_percent_same_bin(self, target_img, sobel_pt_img, weight):
         assert self.width == target_img.width and self.height == target_img.height and \
-            self.width == sobel_pt_img.data.shape[2] and self.height == sobel_pt_img.data.shape[1], \
+            self.width == sobel_pt_img.shape[2] and self.height == sobel_pt_img.shape[1], \
             'weighted_percent_same_bin: image dimensions do not match!'
 
         # conver RGBA to grayscale
         this_gs, other_gs = rgba_to_grayscale(
-            self.pt_img).data, rgba_to_grayscale(target_img.pt_img).data
+            self.pt_img), rgba_to_grayscale(target_img.pt_img)
 
         # TODO: Do we want to support this only across a single channel?
         # this is currently across all channels
@@ -76,7 +75,7 @@ class PtImg2D():
         # var w = otherEmpty ? 1 : flatWeight +
         # (1-flatWeight)*sobelImg.data[i/4];
         sim_tensor[~other_empty] = weight + \
-            (1 - weight) * sobel_pt_img.data[~other_empty]
+            (1 - weight) * sobel_pt_img[~other_empty]
 
         # sum up all of the values where they're equal
         sim_sum = sim_tensor[where_equal].sum()
@@ -131,14 +130,14 @@ def surface_to_np(img_surface):
 
 # convert from pytorch variable to numpy, then to a surface object
 def pt_to_surface(pt_img):
-    return np_to_surface(pt_img.data.numpy())
+    return np_to_surface(pt_img.numpy())
 
 
 # return an image between 0,1 as float variable
 def surface_to_pt(img_surface):
     np_surface = surface_to_np(img_surface).astype("float32") / 255.
     # make sure it's in
-    return V(torch.from_numpy(np_surface))
+    return torch.from_numpy(np_surface)
 
 
 # pull from:
@@ -174,14 +173,14 @@ def load_target(target_file):
 # }
 
 # Horizontal and vertical filters
-SOBEL_X_FILTER = V(T([[-1, 0, 1],
+SOBEL_X_FILTER = T([[-1, 0, 1],
                       [-2, 0, 2],
-                      [-1, 0, 1]]),
+                      [-1, 0, 1]],
                    requires_grad=False).view(1, 1, 3, 3)
 
-SOBEL_Y_FILTER = V(T([[1, 2, 1],
+SOBEL_Y_FILTER = T([[1, 2, 1],
                       [0, 0, 0],
-                      [-1, -2, -1]]),
+                      [-1, -2, -1]],
                    requires_grad=False).view(1, 1, 3, 3)
 
 
@@ -190,7 +189,7 @@ SOBEL_Y_FILTER = V(T([[1, 2, 1],
 # http://pytorch.org/docs/master/nn.html#torch.nn.Conv2d
 SOBEL_XY = torch.cat([SOBEL_X_FILTER, SOBEL_Y_FILTER],
                      dim=0).expand(2, 4, 3, 3)
-BIAS = V(torch.zeros(SOBEL_XY.data.shape[0]), requires_grad=False)
+BIAS = torch.zeros(SOBEL_XY.shape[0], requires_grad=False)
 
 
 # apply sobel to target
@@ -261,7 +260,7 @@ def render_branch(context, branch):
     # brown branch
     context.set_source_rgb(89/255., 58/255., 26/255.)
     context.new_path()
-    context.set_line_width(branch["width"].data[0])
+    context.set_line_width(branch["width"].item())
     context.set_line_cap(cairocffi.LINE_CAP_ROUND)
     context.move_to(branch["start"].x, branch["start"].y)
     context.line_to(branch["end"].x, branch["end"].y)
@@ -274,8 +273,8 @@ def render_leaf(context, leaf):
     context.save()
     context.set_source_rgb(68/255., 106/255., 57/255.)
     context.translate(leaf["center"].x, leaf["center"].y)
-    context.rotate(leaf["angle"].data[0])
-    context.scale(leaf["length"].data[0], leaf["width"].data[0])
+    context.rotate(leaf["angle"].item())
+    context.scale(leaf["length"].item(), leaf["width"].item())
     context.new_path()
     context.arc(0, 0, 0.5, 0, two_pi)
     context.fill()
@@ -287,7 +286,7 @@ def render_leaf(context, leaf):
 def render_flower(context, flower):
     context.set_source_rgb(194/255., 75/255., 119/255.)
     context.new_path()
-    context.arc(flower["center"].x, flower["center"].y, flower["radius"].data[0], 0, two_pi)
+    context.arc(flower["center"].x, flower["center"].y, flower["radius"].item(), 0, two_pi)
     context.fill()
     context.close_path()
 
@@ -312,9 +311,9 @@ def geo_to_json(geo_state):
     if "leaf" in geo_state:
         gleaf = geo_state["leaf"]
         base_state["leaf"] = {
-            "length": gleaf["length"].data[0],
-            "width": gleaf["width"].data[0],
-            "angle": gleaf["angle"].data[0],
+            "length": gleaf["length"].item(),
+            "width": gleaf["width"].item(),
+            "angle": gleaf["angle"].item(),
             "center": {"x": gleaf["center"].x, "y": gleaf["center"].y}
         }
 
@@ -323,16 +322,16 @@ def geo_to_json(geo_state):
         base_state["branch"] = {
             "start": {"x": gbranch["start"].x, "y": gbranch["start"].y},
             "end": {"x": gbranch["end"].x, "y": gbranch["end"].y},
-            "width": gbranch["width"].data[0],
-            "angle": gbranch["angle"].data[0]
+            "width": gbranch["width"].item(),
+            "angle": gbranch["angle"].item()
         }
 
     if "flower" in geo_state:
         gflower = geo_state["flower"]
         base_state["flower"] = {
             "center": {"x": gflower["center"].x, "y": gflower["center"].y},
-            "radius": gflower["radius"].data[0],
-            "angle": gflower["angle"].data[0]
+            "radius": gflower["radius"].item(),
+            "angle": gflower["angle"].item()
         }
 
     # send back the json info for the whole state
@@ -352,8 +351,8 @@ def render_update(full_geo, viewport, print_render=False):
     vine_json = {
         "depth": init_state["depth"],
         "pos": {"x": init_state["pos"].x, "y": init_state["pos"].y},
-        "width": init_state["width"].data[0],
-        "angle": init_state["angle"].data[0],
+        "width": init_state["width"].item(),
+        "angle": init_state["angle"].item(),
         "img_size": list(init_state['img_size']),
         "viewport": {"xmin": start_viewport.xmin, "xmax": start_viewport.xmax,
                      "ymin": start_viewport.ymin, "ymax": start_viewport.ymax},
@@ -370,7 +369,7 @@ def render_update(full_geo, viewport, print_render=False):
     queue_name = 'task_queue'
     print("Getting class information from Unity")
     client = BasicClient(queue_name).connect()
-    
+
     from IPython import embed
     embed()
 
@@ -405,7 +404,7 @@ def render_update(full_geo, viewport, print_render=False):
 
     if print_render:
         vis = Visdom(env='paint')
-        vis.image(pt_img.data.numpy())
+        vis.image(pt_img.numpy())
 
     # adjust viewport? not currently
     return PtImg2D(pt_img=pt_img), viewport

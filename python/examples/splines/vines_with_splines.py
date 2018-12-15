@@ -38,8 +38,8 @@ def unity_render_spline(points, width, height, spline_type="Bezier"):
         # add to our control points, off we go
         ps_point = ps.control_points.add()
 
-        ps_point.x = pt_point.data[0]
-        ps_point.y = pt_point.data[1]
+        ps_point.x = pt_point[0].item()
+        ps_point.y = pt_point[1].item()
         ps_point.z = 0  # pt_point.data[2]
 
     ss = ProtoScreenShot()
@@ -112,7 +112,7 @@ def view_images(imgs):
             lambda x: x.pt_img.view([-1] + list(x.pt_img.size())).permute([0, 3, 1, 2]),
             imgs)))
 
-    vv.images(all_imgs.data.numpy(), nrow=int(sqrt(len(imgs))))
+    vv.images(all_imgs.numpy(), nrow=int(sqrt(len(imgs))))
 
 
 def forward_and_view(point_count, width, height, spline_type):
