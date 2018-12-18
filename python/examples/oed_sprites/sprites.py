@@ -23,7 +23,31 @@ client = BasicClient(queue_name).connect()
 
 all_body_parts = {
     "Eyebrows": {
-
+        "thin_black": 0,
+        "thin_dark_brown": 1,
+        "thin_brown": 2,
+        "thin_tope": 3,
+        "thin_red": 4,
+        "thin_gray": 5,
+        "thin_white": 6,
+        "thin_dark_gray": 7,
+        "surprise_brown": 8,
+        "surprise_tope": 9,
+        "surprise_gray": 10,
+        "surprise_red": 11,
+        "surprise_white": 12,
+        "surprise_dark_gray": 13,
+        "surprise_dark_brown": 14,
+        "surprise_black": 15,
+        "surprise_black": 16,
+        "thick_dark_gray": 17,
+        "thick_dark_brown": 18,
+        "thick_white": 19,
+        "thick_brown": 20,
+        "thick_black": 21,
+        "thick_gray": 22,
+        "thick_tope": 23,
+        "super_thin_black": 24,
     },
     "Eyes": {
 
@@ -170,8 +194,9 @@ def forward_and_view(width, height):
 
 
 #
-width, height = 256, 256
-arm_enum = enumerate_body_types(["Arm left", "Arm right"])
+width, height = 512, 512
+# arm_enum = enumerate_body_types(["Arm left", "Arm right"])
+arm_enum = enumerate_body_types(["Eyebrows"])
 for body_def in arm_enum:
     print("Creating body")
     body = create_body_scene(width, height, body_def)

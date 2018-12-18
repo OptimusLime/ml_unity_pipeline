@@ -71,8 +71,8 @@ def model(width, height):
     probs = probs/probs.sum()
     pt.light_status = pyro.sample("status", dist.Categorical(probs))
 
-    pt.location.x = pyro.sample("x", dist.Normal(0., .03))
-    pt.location.y = pyro.sample("y", dist.Normal(7, .3))
+    pt.location.x = pyro.sample("x", dist.Normal(0., 3.))
+    pt.location.y = pyro.sample("y", dist.Normal(7, 1.4))
     pt.location.z = pyro.sample("z", dist.Normal(7., 3.))
 
     pt.orientation.x = -90  # + pyro.sample("noise-xorient", dist.Normal(0., 1.))
