@@ -50,7 +50,16 @@ all_body_parts = {
         "super_thin_black": 24,
     },
     "Eyes": {
-
+        "thin_black": 0,
+        "thin_dark_brown": 1,
+        "thin_brown": 2,
+        "thin_tope": 3,
+        "thin_red": 4,
+        "thin_gray": 5,
+        "thin_white": 6,
+        "thin_dark_gray": 7,
+        "surprise_brown": 8,
+        "surprise_tope": 9,
     },
     "Nose": {
 
@@ -129,7 +138,7 @@ all_body_parts = {
 
 
 # send a spline over to be rendered
-def unity_render_oed_sprites(traffic_lights, width, height):
+def unity_render_oed_sprites(traffic_lights, width, height, output_file=None):
 
     # get a screenshot as well
     ss = ProtoScreenShot()
@@ -138,14 +147,20 @@ def unity_render_oed_sprites(traffic_lights, width, height):
 
     # send out to client please
     cs_response = client.sync_call(client.get_message(traffic_lights, ss))
-    np_ss = screenshot_to_np(cs_response[1][1])
+    img_bytes = cs_response[1][1]
+
+    if output_file is not None:
+        with open(output_file, 'wb') as f:
+            f.write(img_bytes.data)
+
+    np_ss = screenshot_to_np(img_bytes)
     return np_ss
 
 
-def render(struct, width, height):
+def render(struct, width, height, output_file=None):
 
     # numpy version of image coming back
-    np_img = unity_render_oed_sprites(struct, width, height)
+    np_img = unity_render_oed_sprites(struct, width, height, output_file=output_file)
 
     # send back a pytorch version of the image
     # wrapped with handler for the similarity fct
@@ -163,6 +178,10 @@ def create_body_scene(width, height, parts_and_ix):
         bp = body.body_parts.add()
         bp.part_name = part_name
         bp.body_id = ix
+        if part_name == "Arm right":
+            bp = body.body_parts.add()
+            bp.part_name = "Arm left"
+            bp.body_id = ix
 
     return body
 
@@ -196,14 +215,19 @@ def forward_and_view(width, height):
 #
 width, height = 512, 512
 # arm_enum = enumerate_body_types(["Arm left", "Arm right"])
-arm_enum = enumerate_body_types(["Eyebrows"])
+arm_enum = enumerate_body_types(["Eyes"])
+
+all_imgs = []
+
+# arm_enum = enumerate_body_types(["Eyebrows"])
 for body_def in arm_enum:
     print("Creating body")
     body = create_body_scene(width, height, body_def)
     print("Rendering body")
-    imgs = render(body, width, height)
+    img = render(body, width, height)
     print("Body render {}".format(body_def))
-    view_images(imgs)
+    all_imgs.append(img)
+    # view_images(imgs)
 
 bb()
 print("finished test")

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message ProtoBodyPart
+{
+    string part_name = 1;
+    int32 body_id = 2;
+}
+
+message ProtoBody
+{
+    int32 screen_width = 1;
+    int32 screen_height = 2;
+    repeated ProtoBodyPart body_parts = 3;
+}
