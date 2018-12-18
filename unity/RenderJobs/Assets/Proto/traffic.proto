@@ -1,5 +1,20 @@
 syntax = "proto3";
 
+enum ProtoWeatherEnum {
+    CLEAR = 0;
+    CLOUDY_1 = 1;
+    CLOUDY_2 = 2;
+    CLOUDY_3 = 3;
+    CLOUDY_4 = 4;
+    FOGGY = 5;
+    LIGHT_RAIN = 6;
+    HEAVY_RAIN = 7;
+    LIGHT_SNOW = 8;
+    HEAVY_SNOW = 9;
+    STORM = 10;
+  }
+
+
 message ProtoVector3
 {
     float x = 1;
@@ -10,7 +25,7 @@ message ProtoVector3
 message ProtoSceneEnvironment
 {
     float hour_of_day = 1;
-    string weather = 2;
+    ProtoWeatherEnum weather = 2;
 }
 
 message ProtoTrafficLight
@@ -29,4 +44,5 @@ message ProtoTrafficScene
     repeated ProtoTrafficLight traffic_lights = 3;
     int32 screen_width = 4;
     int32 screen_height = 5;
+    float wait_time = 6;
 }

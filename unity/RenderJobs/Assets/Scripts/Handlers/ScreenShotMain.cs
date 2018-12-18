@@ -4,6 +4,7 @@ using RSG;
 using Jobs;
 using Google.Protobuf;
 using System;
+using System.Linq;
 
 public class ScreenShotMain : BaseHandler
 {
@@ -34,7 +35,10 @@ public class ScreenShotMain : BaseHandler
         Debug.Log("Screenshotting on dispatch thread");
         try
         {
-            var ss = TextureScale.CreateScreenshotPNG(Camera.main, request.Width, request.Height);
+            // var ss = TextureScale.CreateScreenshotPNG(Camera.main, request.Width, request.Height);
+            var ss = TextureScale.CreateScreenshotPNG(Camera.allCameras.ToList(), request.Width, request.Height);
+
+
             ProtoScreenShot response = new ProtoScreenShot()
             {
                 Width = request.Width,
@@ -60,7 +64,7 @@ public class ScreenShotMain : BaseHandler
         this.promise = promise;
         this.request = request;
 
-        return promise; 
+        return promise;
     }
 
 

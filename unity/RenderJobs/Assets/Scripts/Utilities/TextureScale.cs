@@ -2,6 +2,7 @@
 using System.Threading;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class TextureScale
 {
@@ -24,7 +25,7 @@ public class TextureScale
 
         if (resWidth != newWidth || resHeight != final_height)
         {
-            //scaling down with bilinear sampling -- sending small through 
+            //scaling down with bilinear sampling -- sending small through
             TextureScale.Bilinear(screenShot, newWidth, newHeight);
         }
 
@@ -42,6 +43,48 @@ public class TextureScale
         return bytes;
     }
 
+    public static byte[] CreateScreenshotPNG(
+            List<Camera> mains,
+            int final_width,
+            int final_height)
+    {
+        int resWidth = Screen.width;
+        int resHeight = Screen.height;
+        RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
+        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+        foreach(var main in mains){
+            main.targetTexture = rt;
+            main.Render();
+            main.targetTexture = null;
+        }
+        RenderTexture.active = rt;
+        screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+
+        int newWidth = final_width;
+        int newHeight = final_height;
+
+        if (resWidth != newWidth || resHeight != final_height)
+        {
+            //scaling down with bilinear sampling -- sending small through
+            TextureScale.Bilinear(screenShot, newWidth, newHeight);
+        }
+
+        //          screenShot.Resize(512,512);
+        // foreach(var main in mains){
+        //     main.targetTexture = null;
+        // }
+
+        RenderTexture.active = null; // JC: added to avoid errors
+        GameObject.Destroy(rt);
+
+        //create the byte version of the screenshot at the correct scale
+        byte[] bytes = screenShot.EncodeToPNG();
+        GameObject.Destroy(screenShot);
+        GC.Collect();
+
+        //send back the bytes for the screenshot
+        return bytes;
+    }
     public class ThreadData
     {
         public int start;

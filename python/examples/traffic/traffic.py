@@ -6,7 +6,7 @@ import pyro
 import pyro.distributions as dist
 import numpy as np
 from unity_connect import BasicClient, screenshot_to_np
-from proto.traffic_pb2 import ProtoTrafficScene, ProtoSceneEnvironment, ProtoVector3
+from proto.traffic_pb2 import ProtoTrafficScene, ProtoSceneEnvironment, ProtoVector3, ProtoWeatherEnum
 from proto.models_pb2 import ProtoScreenShot
 from pdb import set_trace as bb
 import visdom
@@ -49,10 +49,20 @@ def model(width, height):
     # create a default scene
     scene = ProtoTrafficScene()
     scene.scene_name = "demo"
-    scene.environment.hour_of_day = 12
-    scene.environment.weather = "clear"
+
+    scene.environment.hour_of_day = pyro.sample("hour_of_day",
+                                                dist.Uniform(0., 24.))
+
+    w_probs = torch.ones(len(ProtoWeatherEnum.keys()))
+    w_probs = w_probs/w_probs.sum()
+    weather_ix = pyro.sample("weather", dist.Categorical(w_probs))
+
+    scene.environment.weather = ProtoWeatherEnum.values()[weather_ix]
+    # scene.environment.weather_label = ProtoWeatherEnum.keys()[weather_ix]
+
     scene.screen_width = width
     scene.screen_height = height
+    scene.wait_time = 1.0
 
     # add a single light
     pt = scene.traffic_lights.add()
@@ -60,12 +70,13 @@ def model(width, height):
     probs = torch.Tensor([1., 1., 1.])
     probs = probs/probs.sum()
     pt.light_status = pyro.sample("status", dist.Categorical(probs))
-    pt.location.x = pyro.sample("x", dist.Normal(0., 3.))
-    pt.location.y = pyro.sample("y", dist.Normal(0., 3.))
-    pt.location.z = pyro.sample("z", dist.Normal(0., 3.))
+
+    pt.location.x = pyro.sample("x", dist.Normal(0., .03))
+    pt.location.y = pyro.sample("y", dist.Normal(7, .3))
+    pt.location.z = pyro.sample("z", dist.Normal(7., 3.))
 
     pt.orientation.x = -90  # + pyro.sample("noise-xorient", dist.Normal(0., 1.))
-    pt.orientation.y = 180 + pyro.sample("noise-xorient", dist.Normal(0., 30.))
+    pt.orientation.y = 180 + pyro.sample("noise-xorient", dist.Normal(0., 15.))
     pt.orientation.z = 0
 
     return scene
@@ -77,10 +88,11 @@ def view_images(imgs):
 
 
 def forward_and_view(width, height):
-    for i in range(100):
-        scene = model(width, height)
-        imgs = render(scene, width, height)
-        view_images(imgs)
+    # for i in range(100):
+    scene = model(width, height)
+    print(scene)
+    imgs = render(scene, width, height)
+    view_images(imgs)
 
 
 #

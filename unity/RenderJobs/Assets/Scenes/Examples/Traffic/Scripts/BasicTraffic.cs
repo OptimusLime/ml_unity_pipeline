@@ -5,22 +5,42 @@ using RSG;
 using Jobs;
 using System;
 using System.Collections.Generic;
+using BeautifyEffect;
 
 //[ExecuteInEditMode]
 public class BasicTraffic : BaseHandler
 {
     ProtoTrafficScene sceneToDraw;
     Promise<ProtoMessage> toResolve;
+    public Beautify TrafficCam;
+
 
     public GameObject TrafficPrefab;
+    public GameObject ParentHolder;
     List<GameObject> gameObjects = new List<GameObject>();
+
+    float timeTillRender = 2.0f;
+    bool waitingOnWeather = false;
 
     void Update()
     {
-        if(sceneToDraw != null)
+        if(sceneToDraw != null && !waitingOnWeather)
         {
             DrawTrafficScene(sceneToDraw);
-            resolveScenePromise();
+            timeTillRender = sceneToDraw.WaitTime;
+            waitingOnWeather = true;
+            // resolveScenePromise();
+        }
+
+        if(waitingOnWeather)
+        {
+            timeTillRender -= Time.deltaTime;
+
+            if(timeTillRender < 0)
+            {
+                resolveScenePromise();
+                waitingOnWeather = false;
+            }
         }
     }
 
@@ -75,6 +95,13 @@ public class BasicTraffic : BaseHandler
         }
     }
 
+    void setWeather(int ix)
+    {
+        EnviroSky.instance.SetWeatherOverwrite(ix);
+        // EnviroSky.instance.UpdateWeather();
+
+    }
+
     void DrawTrafficScene(ProtoTrafficScene scene)
     {
 
@@ -83,19 +110,49 @@ public class BasicTraffic : BaseHandler
             clearScene();
             Debug.Log(scene);
 
+            EnviroSky.instance.GameTime.ProgressTime = EnviroTime.TimeProgressMode.None;
+
             Screen.SetResolution(scene.ScreenWidth, scene.ScreenHeight, false);
 
             // process our scene object
             // TODO: Add time of day support
             var time = scene.Environment.HourOfDay; // hour_of_day
-            var weather = scene.Environment.Weather;
+            EnviroSky.instance.SetInternalTimeOfDay(time);
+
+            // EnviroSky.instance.UpdateTime();
+            // EnviroSky.instance.UpdateSunAndMoonPosition();
+            // EnviroSky.instance.CalculateDirectLight();
+            // EnviroSky.instance.UpdateAmbientLight();
+            // EnviroSky.instance.UpdateReflections();
+            // EnviroSky.instance.RenderMoon();
+
+            if(time > 7 && time < 18)
+            {
+                TrafficCam.bloom = false;
+            }
+            else
+            {
+                TrafficCam.bloom = true;
+            }
+
+            var weather = (int) scene.Environment.Weather;
+            setWeather(weather);
+
 
             foreach(var trafficLight in scene.TrafficLights)
             {
                 // instantiate the traffic light
                 var trafficObject = GameObject.Instantiate(TrafficPrefab);
-                trafficObject.transform.position = protoV3ToV3(trafficLight.Location);
-                trafficObject.transform.rotation = Quaternion.Euler(protoV3ToV3(trafficLight.Orientation));
+                // trafficObject.transform.parent = ParentHolder.transform;
+
+                if(trafficLight.Location != null)
+                    trafficObject.transform.position = protoV3ToV3(trafficLight.Location);
+                if(trafficLight.Orientation != null)
+                    trafficObject.transform.rotation = Quaternion.Euler(protoV3ToV3(trafficLight.Orientation));
+
+                // trafficObject.transform.position = Vector3.zero;
+                // trafficObject.transform.rotation = Quaternion.identity;
+
 
                 var light = trafficObject.GetComponent<QT_TrafficLight>();
 

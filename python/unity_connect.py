@@ -3,6 +3,7 @@ from pdb import set_trace as bb
 import json
 import argparse
 from datetime import datetime
+from proto.sprites_pb2 import *
 from proto.traffic_pb2 import *
 from proto.models_pb2 import *
 from proto.examples_pb2 import *
