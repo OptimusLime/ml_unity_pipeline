@@ -14,10 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Examples/Splines/Splines.unity
     guid: 3c6e2ef4a2daf4496a9522c0e9430805
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Examples/Traffic/BasicTrafficScene.unity
     guid: 89ca51762968c45d3beda73ab6c1ec82
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Examples/OED_Sprites/SpritesScene.unity
     guid: f34f750d6bb5e4367b91e0cd504f34f6
   m_configObjects: {}
