@@ -48,9 +48,9 @@ public class BasicTraffic : BaseHandler
     {
         if(sceneToDraw != null)
         {
-            ProtoHello hello = new ProtoHello();
-            hello.ProtoMessage = "finished rendering traffic scene";
-            toResolve.Resolve(new ProtoMessage(hello));
+            // ProtoHello hello = new ProtoHello();
+            // hello.ProtoMessage = "finished rendering traffic scene";
+            toResolve.Resolve(new ProtoMessage(sceneToDraw));
             sceneToDraw = null;
             toResolve = null;
         }
@@ -158,6 +158,28 @@ public class BasicTraffic : BaseHandler
 
                 setLight(trafficLight.LightStatus, light);
 
+                var meshBounds = trafficObject.GetComponent<ShowMeshBounds>();
+                if(meshBounds != null)
+                {
+                    var meshRect = meshBounds.getMeshRectUI();
+                    var renderRect = trafficLight.RenderLoc;
+                    if(renderRect == null)
+                    {
+                        renderRect = new ProtoRenderRect();
+                        trafficLight.RenderLoc = renderRect;
+                    }
+                    // Debug.Log(string.Format("{0} and {1}", renderRect, meshRect));
+                    renderRect.XMin = meshRect.xMin;
+                    renderRect.XMax = meshRect.xMax;
+                    renderRect.YMin = meshRect.yMin;
+                    renderRect.YMax = meshRect.yMax;
+                    // Debug.Log(string.Format("rect {0}", meshRect));
+                }
+                else
+                {
+                    //
+                    Debug.Log("Missing the ShowMeshComponent");
+                }
                 // add to list of things to clear scene
                 gameObjects.Add(trafficObject);
             }

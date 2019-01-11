@@ -10,9 +10,10 @@ from unity_connect import BasicClient
 from proto.traffic_pb2 import ProtoTrafficScene, ProtoSceneEnvironment, ProtoVector3, ProtoWeatherEnum
 from pdb import set_trace as bb
 import visdom
+import json
 from math import sqrt
 from utils import render, scene_to_json
-
+from google.protobuf.json_format import MessageToJson
 
 vv = visdom.Visdom(env="dope")
 
@@ -105,7 +106,8 @@ def forward_and_view(args):
         scene, md = model(args.width, args.height)
         scene_mds.append(md)
         print(md)
-        imgs = render(client, scene, args.width, args.height)
+        scene_info, imgs = render(client, scene, args.width, args.height)
+        print(scene_info)
         view_images(imgs)
         if args.save:
             save_images(imgs, str(i))

@@ -28,14 +28,24 @@ message ProtoSceneEnvironment
     ProtoWeatherEnum weather = 2;
 }
 
+
+message ProtoRenderRect
+{
+    float x_min = 1;
+    float x_max = 2;
+    float y_min = 3;
+    float y_max = 4;
+
+}
+
 message ProtoTrafficLight
 {
     int32 light_type = 1;
     int32 light_status = 2;
     ProtoVector3 location = 3;
     ProtoVector3 orientation = 4;
+    ProtoRenderRect render_loc = 5;
 }
-
 
 message ProtoTrafficScene
 {
